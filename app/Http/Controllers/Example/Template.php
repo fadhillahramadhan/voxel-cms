@@ -9,16 +9,6 @@ use Inertia\Inertia;
 
 class Template extends Controller
 {
-    public function dynamicMethod(Request $request, $method)
-    {
-        if (method_exists($this, $method)) {
-            return $this->$method($request);
-        } else {
-            abort(404);
-        }
-    }
-
-
     public function dashboard()
     {
         return Inertia::render('Example/Dashboard');

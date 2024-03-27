@@ -11,17 +11,23 @@ use App\Http\Middleware\EnsureAdminValid;
 
 use App\Http\Controllers\Admin\Login as AdminLogin;
 use App\Http\Controllers\Admin\Dashboard as AdminDashboard;
+use App\Http\Controllers\VO\Registration;
+
 // Vo Routes
 Route::get('/vo/login', [Login::class, 'show_login'])->name('login');
 Route::post('/vo/auth/login', [Login::class, 'login']);
 
 Route::get('/vo/auth/logout', function () {
     session()->forget('member');
+
     return redirect('/vo/login');
 });
 
 Route::group(['middleware' => [EnsureMemberValid::class]], function () {
     Route::any('/vo/dashboard/{method}', [Dashboard::class, 'dynamicMethod'])
+        ->where('method', '.*');
+
+    Route::any('/vo/registration/{method}', [Registration::class, 'dynamicMethod'])
         ->where('method', '.*');
 });
 // End Vo Routes

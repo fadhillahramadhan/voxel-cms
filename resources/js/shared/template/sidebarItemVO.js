@@ -21,7 +21,7 @@ const sidebarItem = [
     title: 'Registrasi',
     icon: UserPlusIcon,
     BgColor: 'primary',
-    to: '/vo/registrasi/show' 
+    to: '/vo/registration/show' 
   }
 
 ];

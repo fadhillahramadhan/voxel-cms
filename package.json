@@ -17,5 +17,8 @@
         "vue3-apexcharts": "^1.4.4",
         "vue3-perfect-scrollbar": "^1.6.1",
         "vuetify": "^3.5.1"
+    },
+    "dependencies": {
+        "pinia": "^2.1.7"
     }
 }

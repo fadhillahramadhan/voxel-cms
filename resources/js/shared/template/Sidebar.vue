@@ -2,11 +2,12 @@
 import NavGroup from '@/shared/template/NavGroup.vue'
 import NavItem from '@/shared/template/NavItem.vue'
 import logo from '@/assets/images/logos/logo-dark.svg';
+
 import sidebarItemVO from '@/shared/template/sidebarItemVO.js';
 import sidebarItemAdmin from '@/shared/template/sidebarItemAdmin.js';
-
-
 import sidebarItemTemplate from '@/shared/template/sidebarItemTemplate.js';
+
+import { useSidebarStore } from '../../stores/sidebar';
 
 let sidebarMenu = [];
 
@@ -24,6 +25,8 @@ if(window.location.pathname.startsWith('/admin')){
 }
 
 
+const storeSidebar = useSidebarStore();
+
 </script>
 
 <template>
@@ -32,7 +35,10 @@ if(window.location.pathname.startsWith('/admin')){
     <meta name="description" content="My App">
     <meta name="viewport" content="width=device-width, initial-scale=1">
   </Head>
-  <v-navigation-drawer left app class="leftSidebar ml-sm-5 mt-sm-5 bg-containerBg" elevation="10"
+  <v-navigation-drawer
+        v-model="storeSidebar.drawer"
+        left 
+        app class="leftSidebar ml-sm-5 mt-sm-5 bg-containerBg" elevation="10"
         width="270">
         <div class="pa-5 pl-4 ">
           <img :src="logo" alt="logo" class="mb-5" />
@@ -56,3 +62,17 @@ if(window.location.pathname.startsWith('/admin')){
 }
 </style>
 
+
+<script>
+
+export default {
+    mounted() {
+        const storeSidebar = useSidebarStore();
+
+        if (window.innerWidth < 768) {
+            storeSidebar.closeSidebar();
+        }
+    }
+}
+
+</script>

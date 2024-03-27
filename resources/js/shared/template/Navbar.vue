@@ -1,6 +1,10 @@
 <script setup>
 import { Menu2Icon, BellRingingIcon } from 'vue-tabler-icons';
 import { UserIcon, MailIcon, ListCheckIcon } from 'vue-tabler-icons';
+import { useSidebarStore } from '../../stores/sidebar';
+
+const storeSidebar = useSidebarStore();
+
 </script>
 <template>
     <div class="container verticalLayout">
@@ -8,7 +12,8 @@ import { UserIcon, MailIcon, ListCheckIcon } from 'vue-tabler-icons';
             <v-app-bar elevation="0" height="70">
                 <div class="d-flex align-center justify-space-between w-100">
                     <div>
-                        <v-btn class="hidden-lg-and-up text-muted" @click="sDrawer = !sDrawer" icon
+                        <v-btn class="hidden-lg-and-up text-muted" 
+                            @click="storeSidebar.toggleSidebar" icon
                             variant="flat" size="small">
                             <Menu2Icon size="20" stroke-width="1.5" />
                         </v-btn>
@@ -21,10 +26,9 @@ import { UserIcon, MailIcon, ListCheckIcon } from 'vue-tabler-icons';
                     </div>
                     <div>
                         <!-- Upgrade button -->
-                        <!-- <v-btn class="mr-2 bg-primary rounded-pill"
+                       <v-btn class="mr-2 bg-primary rounded-pill"
                             href="https://www.wrappixel.com/templates/spike-vuejs-admin-dashboard/#demos"
-                            target="_blank">Upgrade to Pro</v-btn> -->
-                        <!-- User Profile -->
+                            target="_blank">Upgrade Account</v-btn> 
                         <v-menu :close-on-content-click="false">
                             <template v-slot:activator="{ props }">
                                 <v-btn class="" variant="text" v-bind="props" icon>

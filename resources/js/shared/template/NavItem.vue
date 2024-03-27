@@ -42,7 +42,6 @@ const props = defineProps({ item: Object, level: Number });
 </template>
 <script>
   export default {
-    name: "Navbar",
     data() {
       return {
         user: {}
@@ -52,7 +51,6 @@ const props = defineProps({ item: Object, level: Number });
     methods: {
         handleClick(item) {
             // add class to active item
-            
             this.$inertia.visit(item.to);
         }
     }

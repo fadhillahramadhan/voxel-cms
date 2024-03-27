@@ -11,6 +11,9 @@ import VueApexCharts from 'vue3-apexcharts';
 
 import Layout from '@/shared/template/Layout.vue'
 
+import { createPinia } from 'pinia'
+
+
 const BLUE_THEME = {
   name: 'BLUE_THEME',
   dark: false,
@@ -91,6 +94,7 @@ const vuetify = createVuetify({
   }
 })
 
+const pinia = createPinia()
 
 createInertiaApp({
   resolve: name => {
@@ -115,6 +119,7 @@ createInertiaApp({
     createApp({ render: () => h(App, props) })
       .use(plugin)
       .use(vuetify)
+      .use(pinia)
       .use(PerfectScrollbar)
       .use(VueApexCharts)
       .mount(el)
