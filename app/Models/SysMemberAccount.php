@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\SysMember;
 
 /**
  * @property integer $member_account_member_id
@@ -37,4 +38,9 @@ class SysMemberAccount extends Model
      * @var array
      */
     protected $fillable = ['member_account_username', 'member_account_password', 'member_account_pin'];
+
+    public function member()
+    {
+        return $this->belongsTo(SysMember::class, 'member_account_member_id', 'member_id');
+    }
 }

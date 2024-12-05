@@ -59,7 +59,9 @@ const storeSidebar = useSidebarStore();
                                     </v-list-item>
                                 </v-list>
                                 <div class="pt-4 pb-4 px-5 text-center">
-                                    <v-btn to="" color="primary" variant="outlined" class="rounded-pill" block>Logout</v-btn>
+                                    <v-btn color="primary"
+                                    @click="logout"
+                                    variant="outlined" class="rounded-pill" block>Logout</v-btn>
                                 </div>
                             </v-sheet>
                         </v-menu>
@@ -69,3 +71,27 @@ const storeSidebar = useSidebarStore();
         </div>
     </div>
 </template>
+
+<script>
+  export default {
+    name: "Login",
+    data() {
+      return {
+        errorLogin: false,
+        user: {
+            member_account_username: '',
+            member_account_password: ''
+        }
+      };
+    },
+    methods: {
+      async logout() {
+        if (window.location.pathname.startsWith('/vo')) {
+            await this.$inertia.post('/vo/logout', this.user)
+        } else {
+            await this.$inertia.post('/admin/logout', this.user)
+        }
+      }
+    }
+  };
+</script>

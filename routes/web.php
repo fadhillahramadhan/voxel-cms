@@ -12,12 +12,19 @@ use App\Http\Middleware\EnsureAdminValid;
 use App\Http\Controllers\Admin\Login as AdminLogin;
 use App\Http\Controllers\Admin\Dashboard as AdminDashboard;
 use App\Http\Controllers\VO\Registration;
-
+// handle inertia requests\
+use App\Http\Middleware\HandleInertiaRequests;
 // Vo Routes
-Route::get('/vo/login', [Login::class, 'show_login'])->name('login');
-Route::post('/vo/auth/login', [Login::class, 'login']);
 
-Route::get('/vo/auth/logout', function () {
+// middleware for inertia requests
+
+Route::middleware([HandleInertiaRequests::class])->group(function () {
+    Route::get('/vo/login', [Login::class, 'show_login']);
+    Route::post('/vo/login', [Login::class, 'login']);
+});
+
+
+Route::any('/vo/logout', function () {
     session()->forget('member');
 
     return redirect('/vo/login');

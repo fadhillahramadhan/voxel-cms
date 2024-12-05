@@ -12,6 +12,7 @@ import Logo from '@/shared/components/Logo.vue';
     </Head>
       <v-container fluid class="pa-3">
           <v-row class="h-100vh d-flex justify-center align-center">
+            <!-- {{ $page.props.errors }} -->
               <v-col cols="12" class="d-flex align-center">
                   <div class="boxed-auth-wrap">
                       <v-card rounded="xl" elevation="10" class="px-sm-1 px-0  mx-auto index-2" max-width="450">
@@ -31,14 +32,20 @@ import Logo from '@/shared/components/Logo.vue';
                                           <v-label class="font-weight-medium mb-1">Username</v-label>
                                           <v-text-field variant="outlined"
                                           v-model="user.member_account_username"
-                                          class="pwdInput" hide-details color="primary"></v-text-field>
+                                          :error-messages="  $page.props.errors.member_account_username ? $page.props.errors.member_account_username[0] : '' "
+                                          class="pwdInput"  color="primary"
+                                          ></v-text-field>
+
                                       </v-col>
                                       <v-col cols="12">
                                           <v-label class="font-weight-medium mb-1">Password</v-label>
                                           <v-text-field 
                                           v-model="user.member_account_password"
-                                          variant="outlined" class="border-borderColor" type="password" hide-details
+                                          :error-messages="  $page.props.errors.member_account_password ? $page.props.errors.member_account_password[0] : '' "
+                                          variant="outlined" class="border-borderColor" type="password" 
                                               color="primary"></v-text-field>
+
+
                                       </v-col>
                                       <v-col cols="12 " class="py-0">
                                           <div class="d-flex flex-wrap align-center w-100 ">
@@ -50,7 +57,7 @@ import Logo from '@/shared/components/Logo.vue';
                                       <v-col cols="12">
                                           <v-btn 
                                           @click="login"
-                                          size="large" rounded="pill" color="primary" class="rounded-pill" block type="submit" flat>Sign
+                                          size="large" rounded="pill" color="primary" class="rounded-pill" block  flat>Sign
                                               In</v-btn>
                                       </v-col>
                                   </v-row>
@@ -58,7 +65,9 @@ import Logo from '@/shared/components/Logo.vue';
 
                               <h6 class="text-subtitle-1  text-grey100 d-flex justify-center align-center mt-3">
                                   New to Spike?
-                                  <v-btn class="pl-0 text-primary text-body-1 font-weight-medium  opacity-1 pl-2" height="auto"
+                                  <v-btn 
+                                  v-model="user.remember"
+                                  class="pl-0 text-primary text-body-1 font-weight-medium  opacity-1 pl-2" height="auto"
                                       to="/auth/register" variant="plain">Create an account</v-btn>
                               </h6>
                           </v-card-item>
@@ -86,19 +95,14 @@ import Logo from '@/shared/components/Logo.vue';
         errorLogin: false,
         user: {
             member_account_username: '',
-            member_account_password: ''
+            member_account_password: '',
+            remember: false
         }
       };
     },
     methods: {
-      login() {
-        this.$inertia.post('auth/login', this.user)
-          .then(() => {
-            this.errorLogin = false;
-          })
-          .catch(() => {
-            this.errorLogin = true;
-          });
+      async login() {
+        await this.$inertia.post('/vo/login', this.user)
       }
     }
   };

@@ -50,7 +50,7 @@ const storeSidebar = useSidebarStore();
                     <NavItem :item="item" v-else class="leftPadding" />
                 </template>
             </v-list>
-          
+            
       </perfect-scrollbar>
     </v-navigation-drawer>
 </template>
