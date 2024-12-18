@@ -1,30 +1,24 @@
-import {
-  LayoutDashboardIcon,BorderAllIcon,
-  AlertCircleIcon,
-  CircleDotIcon,
-  BoxMultiple1Icon,
-  LoginIcon, MoodHappyIcon, ApertureIcon, UserPlusIcon
-} from 'vue-tabler-icons';
-
-
-
 const sidebarItem = [
-  { header: 'Home' },
-  {
-    title: 'Dashboard',
-    icon: LayoutDashboardIcon,
-    BgColor: 'primary',
-    to: '/vo/dashboard/show'
-  },
-  { header: 'Jaringan' },
-  {
-    title: 'Registrasi',
-    icon: UserPlusIcon,
-    BgColor: 'primary',
-    to: '/vo/registration/show' 
-  }
-
+    {
+        title: "Dashboard",
+        icon: "menu-icon tf-icons ri-shopping-bag-3-line",
+        // to: '/vo/dashboard/show'
+        sub: [
+            {
+                title: "AA",
+                to: "/vo/dashboard/show",
+            },
+            {
+                title: "AA",
+                to: "/vo/TEST",
+            },
+        ],
+    },
+    {
+        title: "Registrasi",
+        icon: "menu-icon tf-icons ri-shopping-bag-3-line",
+        to: "/vo/login",
+    },
 ];
 
 export default sidebarItem;
-  
