@@ -55,9 +55,3 @@ Route::group(['middleware' => [EnsureAdminValid::class]], function () {
 });
 
 // End Admin Routes
-
-
-// Template Routes
-Route::any('/template/{method}', [Template::class, 'dynamicMethod'])
-    ->where('method', '.*');
-// End Template Routes

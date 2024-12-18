@@ -176,12 +176,6 @@ const storeSidebar = useSidebarStore();
     </aside>
 </template>
 
-<style>
-.active {
-    background-color: #e0e0e0 !important;
-}
-</style>
-
 <script>
 export default {
     mounted() {
