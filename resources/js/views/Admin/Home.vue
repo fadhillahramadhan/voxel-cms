@@ -13,22 +13,6 @@ import Datatable from "@/shared/components/Datatable.vue";
     <div class="row">
         <div class="col-12">
             <Datatable :tables="tablesUsers">
-                <!-- slot action -->
-                <template #buttonAction="{ selectedIDs }">
-                    <button
-                        @click="testData(selectedIDs)"
-                        class="btn btn-outline-danger me-2"
-                    >
-                        Hapus
-                    </button>
-                    <button
-                        @click="testData(selectedIDs)"
-                        class="btn btn-outline-primary"
-                    >
-                        Edit
-                    </button>
-                </template>
-
                 <!-- alter name -->
                 <template #name="{ row }">
                     <a :href="`/admin/users/${row.id}`">{{ row.name }}</a>
@@ -90,6 +74,18 @@ export default {
                     limit: [10, 25, 50, 100],
                     currentLimit: 25,
                 },
+                search: true,
+                buttonAction: [{
+                    display: 'Tambah',
+                    icon: 'ri-add-line',
+                    style: "btn-outline-primary",
+                    action: ""
+                }, {
+                    display: 'Hapus',
+                    icon: 'ri-delete-bin-5-line',
+                    style: "btn-outline-danger",
+                    action: ""
+                }],
             },
         };
     },

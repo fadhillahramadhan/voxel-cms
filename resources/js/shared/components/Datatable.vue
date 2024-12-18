@@ -27,16 +27,13 @@ import axios from "axios";
                         </div>
                     </div>
                     <!-- action button -->
-                    <div class="col-sm-12 col-md-6 d-flex justify-content-sm-center align-items-center justify-content-md-end">
-                        <!-- slots action button -->
-                        <div>
-                            <slot name="buttonAction" v-bind="{ selectedRows, selectedIDs }" />
-
-                            <!-- cari button -->
-                            <button class="btn btn-outline-primary ms-2" data-bs-toggle="modal" data-bs-target="#searchModal">
-                                Cari
-                            </button>
-                        </div>
+                    <div class="col-sm-12 col-md-6 d-flex justify-content-end gap-2 py-5">
+                        <button class="btn" v-for="item in config.buttonAction" :key="item.key" :class="item.style">
+                             <i :class="item.icon"></i> {{ item.display }}
+                        </button>
+                        <button class="btn btn-outline-primary ms-2" v-show="config.search" data-bs-toggle="modal" data-bs-target="#searchModal">
+                                <i class="ri-search-line"></i> Cari
+                        </button>
                     </div>
                 </div>
 
@@ -48,18 +45,7 @@ import axios from "axios";
                                 <input type="checkbox" class="form-check-input" @change="selectAll($event)" />
                             </th>
 
-                            <th
-                                :data-label="column.label"
-                                v-for="column in config.columns"
-                                scope="col"
-                                :key="column.key"
-                                :class="
-                                    column.sort
-                                        ? `sorting sorting_${column.sorting}`
-                                        : ''
-                                "
-                                @click="sort(column.key)"
-                            >
+                            <th :data-label="column.label" v-for="column in config.columns" scope="col" :key="column.key" :class=" column.sort ? `sorting sorting_${column.sorting}` : ''" @click="sort(column.key)">
                                 {{ column.label }}
                             </th>
                         </tr>
@@ -68,12 +54,7 @@ import axios from "axios";
                         <tr v-for="row in results" :key="row.id" class="tb-responsive">
                             <td v-if="config.multipleSelect">
                                 <!-- if sm then show label  pilih -->
-                                <input
-                                    type="checkbox"
-                                    class="form-check-input align-self-end"
-                                    :value="row[config.selectID]"
-                                    @change="selectRow($event, row)"
-                                />
+                                <input type="checkbox" class="form-check-input align-self-end" :value="row[config.selectID]" @change="selectRow($event, row)" />
                             </td>
                             <td v-for="column in config.columns" :key="column.key" :data-label="column.label">
                                 <!-- check if there is a slot with the column key name -->
