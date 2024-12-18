@@ -2,15 +2,14 @@ const sidebarItem = [
     {
         title: "Dashboard",
         icon: "menu-icon tf-icons ri-shopping-bag-3-line",
-        // to: '/vo/dashboard/show'
         sub: [
             {
-                title: "AA",
+                title: "Dashboard",
                 to: "/vo/dashboard/show",
             },
             {
-                title: "AA",
-                to: "/vo/TEST",
+                title: "Setings",
+                to: "/vo/dashboard/settings",
             },
         ],
     },

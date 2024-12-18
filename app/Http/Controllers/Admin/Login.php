@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\SysMember;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class Login extends Controller
 {
@@ -20,30 +21,56 @@ class Login extends Controller
         try {
 
             $validator = Validator::make($request->all(), [
-                'member_account_username' => 'required',
-                'member_account_password' => 'required',
+                'administrator_username' => 'required|exists:site_administrator,administrator_username',
+                'administrator_password' => 'required',
+            ], [
+                'administrator_username.required' => 'Username is required. Please enter your username.',
+                'administrator_username.exists' => 'The username does not exist. Please enter a valid username.',
+                'administrator_password.required' => 'Password is required. Please enter your password.',
             ]);
 
             if ($validator->fails()) {
-                return redirect()->back()->withErrors($validator->errors());
+                return response()->json([
+                    'message' => 'Silahkan periksa kembali inputan Anda.',
+                    'error' => 'validation',
+                    'data' => $validator->errors()
+                ], 400);
             }
 
-            $member_account_username = $request->input('member_account_username');
-            $member_account_password = $request->input('member_account_password');
+            $administrator_username = $request->input('administrator_username');
+            $administrator_password = $request->input('administrator_password');
 
-            // $member = SysMember::where('member_account_username', $member_account_username)
-            //     ->where('member_account_password', $member_account_password)
-            //     ->first();
+            // Database query for checking the administrator credentials
+            $member = DB::table('site_administrator')
+                ->where('administrator_username', $administrator_username)
+                ->where('administrator_password', $administrator_password)
+                ->first();
 
-            // if ($member) {
+            // check if password basic
+            if (!$member) {
+                throw new \Exception("Username atau password salah");
+            }
+
+            // compare password_default
+            if (password_verify($administrator_password, $member->administrator_password)) {
+                throw new \Exception("Password default tidak bisa digunakan");
+            }
+
+
+            // Store the administrator data in session
             $request->session()->put('admin', [
                 'member_account_username' => 'admin',
-                'member_account_password' => 'admin',
             ]);
+
+
 
             return redirect('/admin/dashboard/show');
         } catch (\Throwable $th) {
-            return redirect()->back()->withErrors(['member_account_username' => 'Username atau password salah']);
+            return response()->json([
+                'message' => $th->getMessage(),
+                'error' => 'error',
+                'data' => []
+            ], 400);
         }
     }
 }

@@ -9,6 +9,8 @@ import authBasicLoginMaskDark from "@/assets/img/illustrations/auth-cover-login-
 import authLoginIllustrationLight from "@/assets/img/illustrations/auth-login-illustration-light.png";
 import authLoginIllustrationDark from "@/assets/img/illustrations/auth-login-illustration-dark.png";
 
+import axios from "axios";
+
 // illustrations/auth-cover-login-mask-light.png
 </script>
 
@@ -82,7 +84,7 @@ import authLoginIllustrationDark from "@/assets/img/illustrations/auth-login-ill
                 </span>
             </span>
             <span class="app-brand-text demo text-heading fw-semibold"
-                >Materialize</span
+                >Admin</span
             >
         </a>
         <!-- /Logo -->
@@ -108,9 +110,10 @@ import authLoginIllustrationDark from "@/assets/img/illustrations/auth-login-ill
                 class="d-flex col-12 col-lg-5 col-xl-4 align-items-center authentication-bg position-relative py-sm-12 px-12 py-6"
             >
                 <div class="w-px-400 mx-auto pt-5 pt-lg-0">
-                    <h4 class="mb-1">Welcome to Materialize! 👋</h4>
+                    <h4 class="mb-1">Selamat Datang Esoftdream! 👋</h4>
                     <p class="mb-5">
-                        Please sign-in to your account and start the adventure
+                        <!-- Please sign-in to your account and start the adventure -->
+                        Silakan masuk ke akun Anda dan mulai aktivitas Anda
                     </p>
 
                     <div id="formAuthentication" class="mb-5">
@@ -126,6 +129,8 @@ import authLoginIllustrationDark from "@/assets/img/illustrations/auth-login-ill
                             />
                             <label for="email">Email or Username</label>
                         </div>
+                        <!-- error -->
+
                         <div class="mb-5">
                             <div class="form-password-toggle">
                                 <div class="input-group input-group-merge">
@@ -166,12 +171,12 @@ import authLoginIllustrationDark from "@/assets/img/illustrations/auth-login-ill
                                     Remember Me
                                 </label>
                             </div>
-                            <a
+                            <!-- <a
                                 href="auth-forgot-password-cover.html"
                                 class="float-end mb-1 mt-2"
                             >
                                 <span>Forgot Password?</span>
-                            </a>
+                            </a> -->
                         </div>
                         <button
                             class="btn btn-primary d-grid w-100"
@@ -179,47 +184,6 @@ import authLoginIllustrationDark from "@/assets/img/illustrations/auth-login-ill
                         >
                             Sign in
                         </button>
-                    </div>
-
-                    <p class="text-center">
-                        <span>New on our platform?</span>
-                        <a href="auth-register-cover.html">
-                            <span>Create an account</span>
-                        </a>
-                    </p>
-
-                    <div class="divider my-5">
-                        <div class="divider-text">or</div>
-                    </div>
-
-                    <div class="d-flex justify-content-center gap-2">
-                        <a
-                            href="javascript:;"
-                            class="btn btn-icon rounded-circle btn-text-facebook"
-                        >
-                            <i class="tf-icons ri-facebook-fill"></i>
-                        </a>
-
-                        <a
-                            href="javascript:;"
-                            class="btn btn-icon rounded-circle btn-text-twitter"
-                        >
-                            <i class="tf-icons ri-twitter-fill"></i>
-                        </a>
-
-                        <a
-                            href="javascript:;"
-                            class="btn btn-icon rounded-circle btn-text-github"
-                        >
-                            <i class="tf-icons ri-github-fill"></i>
-                        </a>
-
-                        <a
-                            href="javascript:;"
-                            class="btn btn-icon rounded-circle btn-text-google-plus"
-                        >
-                            <i class="tf-icons ri-google-fill"></i>
-                        </a>
                     </div>
                 </div>
             </div>
@@ -335,8 +299,24 @@ export default {
     },
     methods: {
         async login() {
-            console.log(this.user);
-            await this.$inertia.post("/vo/login", this.user);
+            try {
+                await axios
+                    .post("/admin/auth/login", this.user)
+                    .then((response) => {
+                        console.log(response);
+                        if (response.data.status === "success") {
+                            // Redirect to the dashboard
+                            this.$inertia.visit("/admin/dashboard");
+                        } else {
+                            // Show an error message
+                            this.errorLogin = true;
+                        }
+                    });
+            } catch (error) {
+                // Handle errors here if any
+                console.error("Login request failed:", error);
+                alert("An error occurred while logging in.");
+            }
         },
     },
 };
