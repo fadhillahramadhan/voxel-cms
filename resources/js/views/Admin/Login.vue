@@ -117,17 +117,36 @@ import axios from "axios";
                     </p>
 
                     <div id="formAuthentication" class="mb-5">
+                        <div
+                            class="alert alert-solid-danger"
+                            role="alert"
+                            v-if="errorLogin"
+                        >
+                            {{ errorLogin }}
+                        </div>
+
                         <div class="form-floating form-floating-outline mb-5">
                             <input
                                 type="text"
                                 class="form-control"
-                                v-model="user.member_account_username"
+                                v-model="user.administrator_username"
+                                v-bind:class="{
+                                    'is-invalid': errors.administrator_username,
+                                }"
                                 id="email"
                                 name="email-username"
                                 placeholder="Enter your email or username"
                                 autofocus
                             />
                             <label for="email">Email or Username</label>
+
+                            <div
+                                class="invalid-feedback"
+                                v-if="errors.administrator_username"
+                            >
+                                {{ errors.administrator_username[0] }}
+                                <!-- Show error message -->
+                            </div>
                         </div>
                         <!-- error -->
 
@@ -142,13 +161,26 @@ import axios from "axios";
                                             id="password"
                                             class="form-control"
                                             v-model="
-                                                user.member_account_password
+                                                user.administrator_password
                                             "
+                                            v-bind:class="{
+                                                'is-invalid':
+                                                    errors.administrator_password,
+                                            }"
                                             name="password"
                                             placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
                                             aria-describedby="password"
                                         />
                                         <label for="password">Password</label>
+                                        <div
+                                            class="invalid-feedback"
+                                            v-if="errors.administrator_password"
+                                        >
+                                            {{
+                                                errors.administrator_password[0]
+                                            }}
+                                            <!-- Show error message -->
+                                        </div>
                                     </div>
                                     <span
                                         class="input-group-text cursor-pointer"
@@ -171,16 +203,11 @@ import axios from "axios";
                                     Remember Me
                                 </label>
                             </div>
-                            <!-- <a
-                                href="auth-forgot-password-cover.html"
-                                class="float-end mb-1 mt-2"
-                            >
-                                <span>Forgot Password?</span>
-                            </a> -->
                         </div>
                         <button
                             class="btn btn-primary d-grid w-100"
                             @click="login"
+                            @keydown.enter.prevent="login"
                         >
                             Sign in
                         </button>
@@ -291,10 +318,15 @@ export default {
         return {
             errorLogin: false,
             user: {
-                member_account_username: "",
-                member_account_password: "",
+                administrator_username: "",
+                administrator_password: "",
                 remember: false,
             },
+            errors: {
+                administrator_username: null,
+                administrator_password: null,
+            },
+            errorLogin: null,
         };
     },
     methods: {
@@ -303,19 +335,25 @@ export default {
                 await axios
                     .post("/admin/auth/login", this.user)
                     .then((response) => {
-                        console.log(response);
-                        if (response.data.status === "success") {
-                            // Redirect to the dashboard
-                            this.$inertia.visit("/admin/dashboard");
-                        } else {
-                            // Show an error message
-                            this.errorLogin = true;
-                        }
+                        this.$inertia.visit("/admin/dashboard/show");
                     });
             } catch (error) {
-                // Handle errors here if any
-                console.error("Login request failed:", error);
-                alert("An error occurred while logging in.");
+                // Handle Validation Error
+                if (error.response.data.error === "validation") {
+                    this.errors = error.response.data.data;
+                } else {
+                    this.errorLogin = true;
+                }
+
+                // Handle Error
+                if (error.response.data.error === "error") {
+                    this.errorLogin = error.response.data.message;
+                }
+
+                setTimeout(() => {
+                    this.errorLogin = false;
+                    this.errors = null;
+                }, 5000);
             }
         },
     },

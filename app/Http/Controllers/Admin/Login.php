@@ -24,9 +24,9 @@ class Login extends Controller
                 'administrator_username' => 'required|exists:site_administrator,administrator_username',
                 'administrator_password' => 'required',
             ], [
-                'administrator_username.required' => 'Username is required. Please enter your username.',
-                'administrator_username.exists' => 'The username does not exist. Please enter a valid username.',
-                'administrator_password.required' => 'Password is required. Please enter your password.',
+                'administrator_username.required' => "Silahkan masukkan username Anda.",
+                'administrator_username.exists' => 'Username tidak ditemukan.',
+                'administrator_password.required' => 'Silahkan masukkan password Anda.',
             ]);
 
             if ($validator->fails()) {
@@ -43,8 +43,8 @@ class Login extends Controller
             // Database query for checking the administrator credentials
             $member = DB::table('site_administrator')
                 ->where('administrator_username', $administrator_username)
-                ->where('administrator_password', $administrator_password)
                 ->first();
+
 
             // check if password basic
             if (!$member) {
@@ -52,10 +52,9 @@ class Login extends Controller
             }
 
             // compare password_default
-            if (password_verify($administrator_password, $member->administrator_password)) {
-                throw new \Exception("Password default tidak bisa digunakan");
+            if (!password_verify($administrator_password, $member->administrator_password)) {
+                throw new \Exception("Username atau password salah");
             }
-
 
             // Store the administrator data in session
             $request->session()->put('admin', [
@@ -63,8 +62,12 @@ class Login extends Controller
             ]);
 
 
-
-            return redirect('/admin/dashboard/show');
+            // return redirect('/admin/dashboard/show');
+            return response()->json([
+                'message' => 'Login berhasil',
+                'error' => '',
+                'data' => []
+            ], 200);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => $th->getMessage(),
