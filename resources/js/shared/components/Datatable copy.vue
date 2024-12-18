@@ -7,63 +7,59 @@ import axios from "axios";
 
 <template>
     <div class="card full-height-card">
-        <div class="card-header">
-            <div class="row">
-                <div class="col-12 col-lg-4">
-                    <h5 class="text-md-start text-center">
-                        {{ config.title }}
-                    </h5>
-                </div>
-                <div class="col-12 col-lg-4"></div>
-                <div class="col-12 col-lg-4">
-                    <div
-                        class="flex-grow-1 input-group input-group-sm input-group-merge rounded-pill"
-                    >
-                        <span class="input-group-text" id="basic-addon-search31"
-                            ><i class="ri-search-line lh-1 ri-20px"></i
-                        ></span>
-                        <input
-                            type="text"
-                            class="form-control chat-search-input"
-                            placeholder="Search..."
-                            aria-label="Search..."
-                            aria-describedby="basic-addon-search31"
-                        />
-                        <!-- add button -->
-                        <span
-                            class="input-group-text"
-                            id="basic-addon-search31"
-                        >
-                            <i class="ri-add-line lh-1 ri-20px clickable"></i>
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <!-- action button -->
-            <div class="col-sm-12">
-                <!-- slots action button -->
-                <div
-                    class="justify-content-sm-center align-items-center justify-content-md-end d-flex p-5"
-                >
-                    <slot
-                        name="buttonAction"
-                        v-bind="{ selectedRows, selectedIDs }"
-                    />
-                </div>
-            </div>
-        </div>
-
+        <h5 class="card-header text-md-start text-center">
+            {{ config.title }}
+        </h5>
         <div class="card-datatable text-nowrap">
             <div
                 id="DataTables_Table_0_wrapper"
                 class="dataTables_wrapper dt-bootstrap5 no-footer"
             >
+                <div class="row">
+                    <div class="col-sm-12 col-md-4">
+                        <div
+                            class="flex-grow-1 input-group input-group-sm input-group-merge rounded-pill"
+                        >
+                            <span
+                                class="input-group-text"
+                                id="basic-addon-search31"
+                                ><i class="ri-search-line lh-1 ri-20px"></i
+                            ></span>
+                            <input
+                                type="text"
+                                class="form-control chat-search-input"
+                                placeholder="Search..."
+                                aria-label="Search..."
+                                aria-describedby="basic-addon-search31"
+                            />
+                        </div>
+                    </div>
+                    <!-- action button -->
+                    <div
+                        class="col-sm-12 col-md-8 d-flex justify-content-sm-center align-items-center justify-content-md-end"
+                    >
+                        <!-- slots action button -->
+                        <div>
+                            <slot
+                                name="buttonAction"
+                                v-bind="{ selectedRows, selectedIDs }"
+                            />
+
+                            <!-- cari button -->
+                            <button
+                                class="btn btn-outline-primary btn-xs"
+                                data-bs-toggle="modal"
+                                data-bs-target="#searchModal"
+                            >
+                                Cari
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Table -->
                 <table
-                    class="datatables-ajax table dataTable no-footer cstm-table table-hover mt-3 table-sm"
+                    class="datatables-ajax table dataTable no-footer cstm-table table-hover mt-3"
                     id="DataTables_Table_0"
                     aria-describedby="DataTables_Table_0_info"
                 >
@@ -103,9 +99,9 @@ import axios from "axios";
                                 <!-- if sm then show label  pilih -->
                                 <input
                                     type="checkbox"
-                                    class="form-check-input align-self-end clickable"
+                                    class="form-check-input align-self-end"
                                     :value="row[config.selectID]"
-                                    @click="selectRow($event, row)"
+                                    @change="selectRow($event, row)"
                                 />
                             </td>
                             <td
@@ -359,10 +355,6 @@ export default {
         td:first-child {
         padding-left: 0rem;
         padding-right: 0rem;
-    }
-
-    .clickable {
-        cursor: pointer;
     }
 }
 </style>
