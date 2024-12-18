@@ -809,9 +809,9 @@ export default {
     methods: {
         async logout() {
             if (window.location.pathname.startsWith("/vo")) {
-                await this.$inertia.post("/vo/logout", this.user);
+                await this.$inertia.visit("/vo/auth/logout");
             } else {
-                await this.$inertia.post("/admin/logout", this.user);
+                await this.$inertia.visit("/admin/auth/logout");
             }
         },
     },
