@@ -31,7 +31,7 @@ import axios from "axios";
                         <button class="btn" v-for="item in config.buttonAction" :key="item.key" :class="item.style">
                              <i :class="item.icon"></i> {{ item.display }}
                         </button>
-                        <button class="btn btn-outline-primary ms-2" v-show="config.search" data-bs-toggle="modal" data-bs-target="#searchModal">
+                        <button class="btn btn-outline-primary" v-show="config.search" data-bs-toggle="modal" data-bs-target="#searchModal">
                                 <i class="ri-search-line"></i> Cari
                         </button>
                     </div>
