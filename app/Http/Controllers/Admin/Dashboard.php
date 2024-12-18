@@ -20,7 +20,7 @@ class Dashboard extends Controller
 
     public function show()
     {
-        return Inertia::render('VO/Home', [
+        return Inertia::render('Admin/Home', [
             'title' => 'Dashboard'
         ]);
     }
