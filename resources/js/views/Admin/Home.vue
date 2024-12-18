@@ -14,15 +14,15 @@ import Datatable from "@/shared/components/Datatable.vue";
         <div class="col-12">
             <Datatable :tables="tablesUsers">
                 <!-- slot action -->
-                <template #buttonAction="{ selectedRows }">
+                <template #buttonAction="{ selectedIDs }">
                     <button
-                        @click="testData(selectedRows)"
+                        @click="testData(selectedIDs)"
                         class="btn btn-outline-danger me-2"
                     >
                         Hapus
                     </button>
                     <button
-                        @click="testData(selectedRows)"
+                        @click="testData(selectedIDs)"
                         class="btn btn-outline-primary"
                     >
                         Edit
@@ -96,9 +96,11 @@ export default {
     methods: {
         edit(row) {
             console.log(row);
+            alert("Edit");
         },
         testData(row) {
             console.log(row);
+            alert("Test Data");
         },
     },
 
