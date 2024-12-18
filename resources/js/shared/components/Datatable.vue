@@ -11,27 +11,14 @@ import axios from "axios";
             {{ config.title }}
         </h5>
         <div class="card-datatable text-nowrap">
-            <div
-                id="DataTables_Table_0_wrapper"
-                class="dataTables_wrapper dt-bootstrap5 no-footer"
-            >
+            <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap5 no-footer">
                 <div class="row">
                     <div class="col-sm-12 col-md-6 d-none d-sm-block">
-                        <div
-                            class="dataTables_length"
-                            id="DataTables_Table_0_length"
-                        >
+                        <div class="dataTables_length" id="DataTables_Table_0_length">
                             <label>
                                 Show
-                                <select
-                                    name="DataTables_Table_0_length"
-                                    aria-controls="DataTables_Table_0"
-                                    class="form-select form-select-sm"
-                                    :value="config.options.currentLimit"
-                                >
-                                    <option
-                                        v-for="option in config.options.limit"
-                                    >
+                                <select name="DataTables_Table_0_length" aria-controls="DataTables_Table_0" class="form-select form-select-sm" :value="config.options.currentLimit">
+                                    <option v-for="option in config.options.limit" :key="option" :value="option">
                                         {{ option }}
                                     </option>
                                 </select>
@@ -40,22 +27,13 @@ import axios from "axios";
                         </div>
                     </div>
                     <!-- action button -->
-                    <div
-                        class="col-sm-12 col-md-6 d-flex justify-content-sm-center align-items-center justify-content-md-end"
-                    >
+                    <div class="col-sm-12 col-md-6 d-flex justify-content-sm-center align-items-center justify-content-md-end">
                         <!-- slots action button -->
                         <div>
-                            <slot
-                                name="buttonAction"
-                                v-bind="{ selectedRows, selectedIDs }"
-                            />
+                            <slot name="buttonAction" v-bind="{ selectedRows, selectedIDs }" />
 
                             <!-- cari button -->
-                            <button
-                                class="btn btn-outline-primary ms-2"
-                                data-bs-toggle="modal"
-                                data-bs-target="#searchModal"
-                            >
+                            <button class="btn btn-outline-primary ms-2" data-bs-toggle="modal" data-bs-target="#searchModal">
                                 Cari
                             </button>
                         </div>
@@ -63,19 +41,11 @@ import axios from "axios";
                 </div>
 
                 <!-- Table -->
-                <table
-                    class="datatables-ajax table dataTable no-footer cstm-table"
-                    id="DataTables_Table_0"
-                    aria-describedby="DataTables_Table_0_info"
-                >
+                <table class="datatables-ajax table dataTable no-footer cstm-table" id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info">
                     <thead>
                         <tr>
                             <th v-if="config.multipleSelect">
-                                <input
-                                    type="checkbox"
-                                    class="form-check-input"
-                                    @change="selectAll($event)"
-                                />
+                                <input type="checkbox" class="form-check-input" @change="selectAll($event)" />
                             </th>
 
                             <th
@@ -95,11 +65,7 @@ import axios from "axios";
                         </tr>
                     </thead>
                     <tbody>
-                        <tr
-                            v-for="row in results"
-                            :key="row.id"
-                            class="tb-responsive"
-                        >
+                        <tr v-for="row in results" :key="row.id" class="tb-responsive">
                             <td v-if="config.multipleSelect">
                                 <!-- if sm then show label  pilih -->
                                 <input
@@ -109,11 +75,7 @@ import axios from "axios";
                                     @change="selectRow($event, row)"
                                 />
                             </td>
-                            <td
-                                v-for="column in config.columns"
-                                :key="column.key"
-                                :data-label="column.label"
-                            >
+                            <td v-for="column in config.columns" :key="column.key" :data-label="column.label">
                                 <!-- check if there is a slot with the column key name -->
                                 <template v-if="$slots[column.key]">
                                     <slot :name="column.key" v-bind="{ row }" />
@@ -130,80 +92,35 @@ import axios from "axios";
                 <!-- Pagination -->
                 <div class="row">
                     <div class="col-sm-12 col-md-6">
-                        <div
-                            class="dataTables_info"
-                            id="DataTables_Table_0_info"
-                            role="status"
-                            aria-live="polite"
-                        >
-                            Showing 0 to 0 of 0 entries
+                        <div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite">
+                            <small>Menampilkan data {{ pagination.start }} - {{ pagination.end }} dari {{ pagination.total_data }} data</small>
                         </div>
                     </div>
-                    <div
-                        class="col-sm-12 col-md-6 d-flex justify-content-sm-center justify-content-md-end"
-                        id="btn-container"
-                    >
+                    <div class="col-sm-12 col-md-6 d-flex justify-content-sm-center justify-content-md-end" id="btn-container">
                         <nav aria-label="Page navigation">
-                            <ul
-                                class="pagination pagination-rounded pagination-outline-primary"
-                            >
-                                <li class="page-item first">
-                                    <a
-                                        class="page-link waves-effect"
-                                        href="javascript:void(0);"
-                                        ><i
-                                            class="tf-icon ri-skip-back-mini-line ri-20px"
-                                        ></i
-                                    ></a>
+                            <ul class="pagination pagination-rounded pagination-outline-primary">
+                                <li class="page-item first" :class="!pagination.first_page ? 'd-none' : ''">
+                                    <a class="page-link waves-effect" href="javascript:void(0);">
+                                        <i class="tf-icon ri-skip-back-mini-line ri-20px"></i>
+                                    </a>
                                 </li>
-                                <li class="page-item prev">
-                                    <a
-                                        class="page-link waves-effect"
-                                        href="javascript:void(0);"
-                                        ><i
-                                            class="tf-icon ri-arrow-left-s-line ri-20px"
-                                        ></i
-                                    ></a>
+                                <li class="page-item prev" :class="!pagination.first_page ? 'd-none' : ''">
+                                    <a class="page-link waves-effect" href="javascript:void(0);">
+                                        <i class="tf-icon ri-arrow-left-s-line ri-20px"></i>
+                                    </a>
                                 </li>
-                                <li class="page-item">
-                                    <a
-                                        class="page-link waves-effect"
-                                        href="javascript:void(0);"
-                                        >1</a
-                                    >
+                                <li class="page-item" v-for='item in pagination.detail' :key='item' :class="item === pagination.current ? 'active' : ''">
+                                    <a class="page-link waves-effect" href="javascript:void(0);">{{ item }}</a>
                                 </li>
-                                <li class="page-item">
-                                    <a
-                                        class="page-link waves-effect"
-                                        href="javascript:void(0);"
-                                        >2</a
-                                    >
+                                <li class="page-item next" :class="!pagination.last_page ? 'd-none' : ''">
+                                    <a class="page-link waves-effect" href="javascript:void(0);">
+                                        <i class="tf-icon ri-arrow-right-s-line ri-20px"></i>
+                                    </a>
                                 </li>
-                                <li class="page-item active">
-                                    <a
-                                        class="page-link waves-effect"
-                                        href="javascript:void(0);"
-                                        >3</a
-                                    >
-                                </li>
-
-                                <li class="page-item next">
-                                    <a
-                                        class="page-link waves-effect"
-                                        href="javascript:void(0);"
-                                        ><i
-                                            class="tf-icon ri-arrow-right-s-line ri-20px"
-                                        ></i
-                                    ></a>
-                                </li>
-                                <li class="page-item last">
-                                    <a
-                                        class="page-link waves-effect"
-                                        href="javascript:void(0);"
-                                        ><i
-                                            class="tf-icon ri-skip-forward-mini-line ri-20px"
-                                        ></i
-                                    ></a>
+                                <li class="page-item last" :class="!pagination.last_page ? 'd-none' : ''">
+                                    <a class="page-link waves-effect" href="javascript:void(0);">
+                                        <i class="tf-icon ri-skip-forward-mini-line ri-20px"></i>
+                                    </a>
                                 </li>
                             </ul>
                         </nav>
@@ -239,6 +156,26 @@ export default {
                     created_at: "2021-10-10",
                 },
             ],
+            pagination: {
+                total_data: 786,
+                total_page: 40,
+                total_display: 10,
+                first_page: true,
+                last_page: true,
+                prev: 5,
+                current: 6,
+                next: 7,
+                detail: [
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9
+                ],
+                start: 101,
+                end: 120
+            },
             config: this.tables,
             selectedRows: [],
             selectedIDs: [],
