@@ -14,6 +14,8 @@ use App\Http\Controllers\Admin\Dashboard as AdminDashboard;
 use App\Http\Controllers\VO\Registration;
 // handle inertia requests\
 use App\Http\Middleware\HandleInertiaRequests;
+use GuzzleHttp\Psr7\Request;
+
 // Vo Routes
 
 // middleware for inertia requests

@@ -6,6 +6,5 @@ use Illuminate\Support\Facades\Route;
 Route::get('/test', function (Request $request) {
     return [
         'message' => 'Hello World',
-        'request' => $request->all()
     ];
 });
