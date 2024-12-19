@@ -16,6 +16,8 @@ class EnsureAdminValid
     public function handle(Request $request, Closure $next): Response
     {
         $member = $request->session()->get('admin');
+        $token = $request->session()->get('admin_token');
+
 
         if (!$member) {
             return redirect('/admin/login');
