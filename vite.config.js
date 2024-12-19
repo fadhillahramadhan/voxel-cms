@@ -42,7 +42,6 @@ export default defineConfig({
 
                 // Vendors JS (for specific functionalities)
                 "resources/assets/vendor/libs/moment/moment.js", // Moment.js
-                "resources/assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js", // DataTables Bootstrap 5 JS
                 "resources/assets/vendor/libs/apex-charts/apexcharts.js", // ApexCharts JS
 
                 // Main JS Files
