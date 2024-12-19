@@ -44,7 +44,7 @@ Route::group(['middleware' => [EnsureMemberValid::class]], function () {
 
 // Admin Routes
 Route::get('/admin/login', [AdminLogin::class, 'show_login'])->name('login');
-Route::post('/admin/auth/login', [AdminLogin::class, 'login']);
+Route::post('/admin/auth/login', [AdminLogin::class, 'login'])->withoutMiddleware('csrf');
 
 Route::get('/admin/auth/logout', function () {
     session()->forget('admin');

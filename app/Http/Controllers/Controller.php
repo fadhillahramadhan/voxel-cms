@@ -10,10 +10,16 @@ abstract class Controller
 
 
     public $tableLib;
+    public $session;
 
-    public function __construct()
+    public function __construct(Request $request)
     {
         $this->tableLib = new TableLib();
+
+        // session 
+        // $this->session = $request->session();
+
+        // check if there any session
     }
 
     public function dynamicMethod(Request $request, $method)
