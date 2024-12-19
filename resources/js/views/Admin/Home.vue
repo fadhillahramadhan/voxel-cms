@@ -58,23 +58,27 @@ export default {
                     {
                         key: "name",
                         label: "Name",
+                        align: "left",
                         sort: true,
                         type: "text",
                     },
                     {
                         key: "email",
                         label: "Email",
+                        align: "left",
                         sort: true,
                         type: "text",
                     },
                     {
                         key: "created_at",
                         label: "Created At",
+                        align: "left",
                         sort: true,
                         type: "date",
                     },
                     {
                         key: "action",
+                        align: "center",
                         label: "#",
                         sort: false,
                     },

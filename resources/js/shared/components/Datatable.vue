@@ -78,16 +78,17 @@ import axios from "axios";
                             </th>
 
                             <th
-                                :data-label="column.label"
                                 v-for="column in config.columns"
-                                scope="col"
+                                :data-label="column.label"
                                 :key="column.key"
-                                :class="
+                                :class="[
                                     column.sort
                                         ? `sorting sorting_${column.sorting}`
-                                        : ''
-                                "
+                                        : '',
+                                    column.align,
+                                ]"
                                 @click="sort(column.key)"
+                                scope="col"
                             >
                                 {{ column.label }}
                             </th>
@@ -103,15 +104,16 @@ import axios from "axios";
                                 <!-- if sm then show label  pilih -->
                                 <input
                                     type="checkbox"
-                                    class="form-check-input align-self-end clickable"
                                     :value="row[config.selectID]"
                                     @click="selectRow($event, row)"
+                                    class="form-check-input align-self-end clickable"
                                 />
                             </td>
                             <td
                                 v-for="(column, index) in config.columns"
                                 :key="column.key"
                                 :data-label="column.label"
+                                :class="[column.align]"
                                 @click="selectRow($event, row)"
                             >
                                 <!-- check if there is a slot with the column key name -->
