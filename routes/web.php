@@ -20,6 +20,11 @@ use GuzzleHttp\Psr7\Request;
 
 // middleware for inertia requests
 
+// FORWARD / INTO ADMIN
+Route::get('/', function () {
+    return redirect('/admin/login');
+});
+
 Route::middleware([HandleInertiaRequests::class])->group(function () {
     Route::get('/vo/login', [Login::class, 'show_login']);
     Route::post('/vo/login', [Login::class, 'login']);
