@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use App\Models\SysMember;
+
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
@@ -42,23 +42,23 @@ class Login extends Controller
             $administrator_password = $request->input('administrator_password');
 
             // Database query for checking the administrator credentials
-            $member = DB::table('site_administrator')
+            $user = DB::table('site_administrator')
                 ->where('administrator_username', $administrator_username)
                 ->first();
 
 
             // check if password basic
-            if (!$member) {
+            if (!$user) {
                 throw new \Exception("Username atau password salah");
             }
 
             // compare password_default
-            if (!password_verify($administrator_password, $member->administrator_password)) {
+            if (!password_verify($administrator_password, $user->administrator_password)) {
                 throw new \Exception("Username atau password salah");
             }
 
             // Store the administrator data in session
-            $request->session()->put('admin', $member);
+            $request->session()->put('admin', $user);
 
 
 

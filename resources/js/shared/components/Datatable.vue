@@ -1,12 +1,11 @@
 <script setup>
 import { Head } from "@inertiajs/vue3";
 import axios from "axios";
-
-// props get data from parent component
 </script>
 
 <template>
     <div class="card full-height-card">
+        <!-- Card Header -->
         <div class="card-header">
             <div class="row">
                 <div class="col-12 col-lg-4">
@@ -19,21 +18,16 @@ import axios from "axios";
                     <div
                         class="flex-grow-1 input-group input-group-sm input-group-merge rounded-pill"
                     >
-                        <span class="input-group-text" id="basic-addon-search31"
-                            ><i class="ri-search-line lh-1 ri-20px"></i
-                        ></span>
+                        <span class="input-group-text">
+                            <i class="ri-search-line lh-1 ri-20px"></i>
+                        </span>
                         <input
                             type="text"
                             class="form-control chat-search-input"
                             placeholder="Search..."
-                            aria-label="Search..."
-                            aria-describedby="basic-addon-search31"
+                            @input="onSearch"
                         />
-                        <!-- add button -->
-                        <span
-                            class="input-group-text"
-                            id="basic-addon-search31"
-                        >
+                        <span class="input-group-text">
                             <i class="ri-add-line lh-1 ri-20px clickable"></i>
                         </span>
                     </div>
@@ -41,31 +35,27 @@ import axios from "axios";
             </div>
         </div>
 
+        <!-- Action Buttons -->
         <div class="row">
-            <!-- action button -->
             <div class="col-sm-12">
-                <!-- slots action button -->
                 <div
                     class="justify-content-sm-center align-items-center justify-content-md-end d-flex p-5"
+                    id="btn-container"
                 >
                     <slot
                         name="buttonAction"
-                        v-bind="{ selectedRows, selectedIDs }"
+                        :selectedRows="selectedRows"
+                        :selectedIDs="selectedIDs"
                     />
                 </div>
             </div>
         </div>
 
+        <!-- Table Content -->
         <div class="card-datatable text-nowrap">
-            <div
-                id="DataTables_Table_0_wrapper"
-                class="dataTables_wrapper dt-bootstrap5 no-footer"
-            >
-                <!-- Table -->
+            <div class="dataTables_wrapper dt-bootstrap5 no-footer">
                 <table
                     class="datatables-ajax table dataTable no-footer cstm-table table-hover mt-3 table-sm"
-                    id="DataTables_Table_0"
-                    aria-describedby="DataTables_Table_0_info"
                 >
                     <thead>
                         <tr>
@@ -73,20 +63,14 @@ import axios from "axios";
                                 <input
                                     type="checkbox"
                                     class="form-check-input"
-                                    @change="selectAll($event)"
+                                    v-model="selected_all"
+                                    @change="selectAll"
                                 />
                             </th>
-
                             <th
                                 v-for="column in config.columns"
-                                :data-label="column.label"
                                 :key="column.key"
-                                :class="[
-                                    column.sort
-                                        ? `sorting sorting_${column.sorting}`
-                                        : '',
-                                    column.align,
-                                ]"
+                                :class="getColumnClass(column)"
                                 @click="sort(column.key)"
                                 scope="col"
                             >
@@ -97,33 +81,36 @@ import axios from "axios";
                     <tbody>
                         <tr
                             v-for="row in results"
-                            :key="row.id"
+                            :key="row[config.selectID]"
                             class="tb-responsive"
                         >
                             <td v-if="config.multipleSelect">
-                                <!-- if sm then show label  pilih -->
                                 <input
                                     type="checkbox"
-                                    :value="row[config.selectID]"
-                                    @click="selectRow($event, row)"
+                                    v-model="selectedRows[row[config.selectID]]"
                                     class="form-check-input align-self-end clickable"
                                 />
                             </td>
                             <td
-                                v-for="(column, index) in config.columns"
+                                v-for="column in config.columns"
                                 :key="column.key"
                                 :data-label="column.label"
-                                :class="[column.align]"
-                                @click="selectRow($event, row)"
+                                :class="getAlignmentClass(column)"
                             >
-                                <!-- check if there is a slot with the column key name -->
                                 <template v-if="$slots[column.key]">
-                                    <slot :name="column.key" v-bind="{ row }" />
+                                    <slot :name="column.key" :row="row" />
                                 </template>
-
                                 <template v-else>
                                     {{ row[column.key] }}
                                 </template>
+                            </td>
+                        </tr>
+                        <tr v-if="!results.length">
+                            <td
+                                :colspan="config.columns.length + 1"
+                                class="text-center"
+                            >
+                                No data available
                             </td>
                         </tr>
                     </tbody>
@@ -132,20 +119,18 @@ import axios from "axios";
                 <!-- Pagination -->
                 <div class="row">
                     <div class="col-sm-12 col-md-6 d-none d-sm-block">
-                        <div
-                            class="dataTables_length"
-                            id="DataTables_Table_0_length"
-                        >
+                        <div class="dataTables_length">
                             <label>
                                 Show
                                 <select
-                                    name="DataTables_Table_0_length"
-                                    aria-controls="DataTables_Table_0"
                                     class="form-control form-control-sm"
-                                    :value="config.options.currentLimit"
+                                    v-model.number="config.options.currentLimit"
+                                    @change="fetchData"
                                 >
                                     <option
                                         v-for="option in config.options.limit"
+                                        :key="option"
+                                        :value="option"
                                     >
                                         {{ option }}
                                     </option>
@@ -154,72 +139,31 @@ import axios from "axios";
                             </label>
                         </div>
                     </div>
-
                     <div
                         class="col-sm-12 col-md-6 d-flex justify-content-sm-center justify-content-md-end align-items-center"
-                        id="btn-container"
+                        id="pagination-container"
                     >
                         <nav aria-label="Page navigation">
                             <ul
                                 class="pagination pagination-rounded pagination-outline-primary"
                             >
-                                <li class="page-item first">
+                                <li
+                                    v-for="link in pagination.links"
+                                    :key="link.label"
+                                    :class="[
+                                        'page-item',
+                                        { active: link.active },
+                                    ]"
+                                >
                                     <a
+                                        v-if="
+                                            link.value || link.label === '...'
+                                        "
                                         class="page-link waves-effect"
-                                        href="javascript:void(0);"
-                                        ><i
-                                            class="tf-icon ri-skip-back-mini-line ri-20px"
-                                        ></i
-                                    ></a>
-                                </li>
-                                <li class="page-item prev">
-                                    <a
-                                        class="page-link waves-effect"
-                                        href="javascript:void(0);"
-                                        ><i
-                                            class="tf-icon ri-arrow-left-s-line ri-20px"
-                                        ></i
-                                    ></a>
-                                </li>
-                                <li class="page-item">
-                                    <a
-                                        class="page-link waves-effect"
-                                        href="javascript:void(0);"
-                                        >1</a
+                                        @click.prevent="fetchData(link.value)"
                                     >
-                                </li>
-                                <li class="page-item">
-                                    <a
-                                        class="page-link waves-effect"
-                                        href="javascript:void(0);"
-                                        >2</a
-                                    >
-                                </li>
-                                <li class="page-item active">
-                                    <a
-                                        class="page-link waves-effect"
-                                        href="javascript:void(0);"
-                                        >3</a
-                                    >
-                                </li>
-
-                                <li class="page-item next">
-                                    <a
-                                        class="page-link waves-effect"
-                                        href="javascript:void(0);"
-                                        ><i
-                                            class="tf-icon ri-arrow-right-s-line ri-20px"
-                                        ></i
-                                    ></a>
-                                </li>
-                                <li class="page-item last">
-                                    <a
-                                        class="page-link waves-effect"
-                                        href="javascript:void(0);"
-                                        ><i
-                                            class="tf-icon ri-skip-forward-mini-line ri-20px"
-                                        ></i
-                                    ></a>
+                                        {{ link.label }}
+                                    </a>
                                 </li>
                             </ul>
                         </nav>
@@ -236,135 +180,80 @@ export default {
         tables: {
             type: Object,
             required: true,
+            validator(value) {
+                return (
+                    typeof value.title === "string" &&
+                    Array.isArray(value.columns) &&
+                    value.columns.every((col) => typeof col.key === "string")
+                );
+            },
         },
     },
     data() {
         return {
-            results: [
-                // fake data for testing
-                {
-                    id: 1,
-                    name: "Mark",
-                    email: "fadhillahramadhan01@gmail.com ",
-                    created_at: "2021-10-10",
-                },
-                {
-                    id: 2,
-                    name: "Jacob",
-                    email: "test@gmail.com",
-                    created_at: "2021-10-10",
-                },
-            ],
+            results: [],
+            pagination: {},
             config: this.tables,
-            selectedRows: [],
-            selectedIDs: [],
+            selectedRows: {},
+            selected_all: false,
         };
     },
-    methods: {
-        sort(key) {
-            const column = this.config.columns.find(
-                (column) => column.key === key
+    computed: {
+        selectedIDs() {
+            return Object.keys(this.selectedRows).filter(
+                (key) => this.selectedRows[key]
             );
-            if (column.sort) {
+        },
+    },
+    methods: {
+        fetchData(page = 1) {
+            this.selected_all = false;
+            this.selectedRows = {};
+
+            axios
+                .get(this.config.url, {
+                    params: {
+                        limit: this.config.options.currentLimit,
+                        page,
+                    },
+                })
+                .then(({ data }) => {
+                    this.results = data.data.results;
+                    this.pagination = data.pagination;
+                })
+                .catch(() => {
+                    this.results = [];
+                });
+        },
+        sort(key) {
+            const column = this.config.columns.find((col) => col.key === key);
+            if (column?.sort) {
                 column.sorting = column.sorting === "asc" ? "desc" : "asc";
             }
         },
-        selectAll(event) {
-            this.selectedRows = event.target.checked
-                ? this.results.map((row) => row[this.config.selectID])
-                : [];
+        selectAll() {
+            this.results.forEach((row) => {
+                this.selectedRows[row[this.config.selectID]] =
+                    this.selected_all;
+            });
         },
-        selectRow(event, row) {
-            console.log(row);
-            // just push the entire row object
-            if (event.target.checked) {
-                this.selectedRows.push(row);
-                this.selectedIDs.push(row[this.config.selectID]);
-            } else {
-                this.selectedRows = this.selectedRows.filter(
-                    (selectedRow) =>
-                        selectedRow[this.config.selectID] !==
-                        row[this.config.selectID]
-                );
-                this.selectedIDs = this.selectedIDs.filter(
-                    (selectedID) => selectedID !== row[this.config.selectID]
-                );
-            }
+        getColumnClass(column) {
+            return [
+                column.sort ? `sorting sorting_${column.sorting}` : "",
+                column.align ? `text-${column.align}` : "",
+            ];
+        },
+        getAlignmentClass(column) {
+            return column.align ? `text-${column.align}` : "";
+        },
+        onSearch(event) {
+            // Handle search logic here
+            const query = event.target.value;
+            console.log("Search query:", query);
         },
     },
-
     created() {
-        this.config.columns.forEach((column) => {
-            if (column.sort) {
-                column.sorting = "asc";
-            }
-        });
+        this.fetchData();
     },
 };
 </script>
-
-<style scoped>
-@media screen and (max-width: 600px) {
-    /* Hide the table header and display rows as blocks */
-    .cstm-table thead {
-        display: none;
-    }
-
-    .cstm-table tr {
-        display: block;
-        margin-bottom: 0.625em;
-    }
-
-    /* Style for table cells on mobile */
-    .cstm-table td {
-        display: block;
-        font-size: 0.8em;
-        padding: 0.5rem !important;
-        text-align: left !important;
-    }
-
-    /* Add column label before the content of each cell */
-    .cstm-table td::before {
-        content: attr(data-label);
-        font-weight: bold;
-        text-transform: uppercase;
-        display: block;
-        margin-bottom: 0.5em;
-    }
-
-    /* Remove bottom border for the last cell */
-    .cstm-table td:last-child {
-        border-bottom: 1px solid #ddd;
-    }
-
-    /* Adjust the pagination on small screens */
-    #DataTables_Table_0_paginate {
-        justify-content: center !important;
-        margin-top: 1rem !important;
-    }
-
-    /* Make pagination buttons full-width on small screens */
-    #btn-container .btn {
-        width: 100%;
-        height: 3em;
-    }
-
-    /* Enable horizontal scrolling for large tables */
-    .table-responsive {
-        overflow-x: auto;
-    }
-
-    html:not([dir="rtl"])
-        div.card-datatable
-        table.dataTable
-        tbody
-        td:first-child {
-        padding-left: 0rem;
-        padding-right: 0rem;
-    }
-
-    .clickable {
-        cursor: pointer;
-    }
-}
-</style>

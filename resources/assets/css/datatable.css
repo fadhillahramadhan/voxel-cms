@@ -1,0 +1,88 @@
+.text-center {
+    text-align: center;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+@media screen and (max-width: 768px) {
+
+    /* Hide the table header and display rows as blocks */
+    .cstm-table thead {
+        display: none;
+    }
+
+    .cstm-table tr {
+        display: block;
+        margin-bottom: 0.625em;
+    }
+
+    /* Style for table cells on mobile */
+    .cstm-table td {
+        display: block;
+        font-size: 0.8em;
+        padding: 0.5rem !important;
+        text-align: left !important;
+    }
+
+    /* Add column label before the content of each cell */
+    .cstm-table td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        text-transform: uppercase;
+        display: block;
+        margin-bottom: 0.5em;
+    }
+
+    /* Remove bottom border for the last cell */
+    .cstm-table td:last-child {
+        border-bottom: 1px solid #ddd;
+    }
+
+    /* Adjust the pagination on small screens */
+    #DataTables_Table_0_paginate {
+        justify-content: center !important;
+        margin-top: 1rem !important;
+    }
+
+    /* Make pagination buttons full-width on small screens */
+    #btn-container .btn {
+        width: 100%;
+        height: 3em;
+    }
+
+    /* Enable horizontal scrolling for large tables */
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    html:not([dir="rtl"]) div.card-datatable table.dataTable tbody td:first-child {
+        padding-left: 0rem;
+        padding-right: 0rem;
+    }
+
+    .clickable {
+        cursor: pointer;
+    }
+
+    #pagination-container {
+        zoom: 60%;
+        justify-content: center;
+    }
+
+    /* give tr bottom  border */
+    tr.tb-responsive {
+        border-top: 2px solid #ddd;
+        border-bottom: 5px solid #ddd;
+    }
+
+    #btn-container {
+        justify-content: left;
+        padding: 0.5rem !important;
+    }
+}

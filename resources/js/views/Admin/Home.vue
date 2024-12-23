@@ -29,7 +29,6 @@ import Datatable from "@/shared/components/Datatable.vue";
                     </button>
                 </template>
 
-                <!-- alter name -->
                 <template #name="{ row }">
                     <a :href="`/admin/users/${row.id}`">{{ row.name }}</a>
                 </template>
@@ -52,26 +51,26 @@ export default {
             table: {
                 title: "List Users",
                 searchTitle: "Search User",
-                url: "/admin/users",
-                selectID: "id",
+                url: "datatable",
+                selectID: "member_id",
                 columns: [
                     {
-                        key: "name",
+                        key: "member_name",
                         label: "Name",
                         align: "left",
                         sort: true,
                         type: "text",
                     },
                     {
-                        key: "email",
+                        key: "member_email",
                         label: "Email",
                         align: "left",
                         sort: true,
                         type: "text",
                     },
                     {
-                        key: "created_at",
-                        label: "Created At",
+                        key: "member_mobile_phone",
+                        label: "Phone",
                         align: "left",
                         sort: true,
                         type: "date",
@@ -79,14 +78,14 @@ export default {
                     {
                         key: "action",
                         align: "center",
-                        label: "#",
+                        label: "Aksi",
                         sort: false,
                     },
                 ],
                 multipleSelect: true,
                 options: {
                     limit: [10, 25, 50, 100],
-                    currentLimit: 25,
+                    currentLimit: 10,
                 },
             },
         };

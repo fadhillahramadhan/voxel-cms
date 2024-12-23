@@ -41,6 +41,13 @@
     @vite('resources/assets/vendor/js/template-customizer.js')
     @vite('resources/assets/js/config.js')
 
+    <!-- DATATABLES CSS -->
+    @vite('resources/assets/css/datatable.css')
+
+
+    <!-- Custom CSS -->
+    @vite('resources/assets/css/login.css')
+
 
     @vite('resources/js/app.js')
 

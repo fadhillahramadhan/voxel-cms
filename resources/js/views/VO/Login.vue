@@ -1,15 +1,13 @@
 <script setup>
 import { Head, Link } from "@inertiajs/vue3";
-// resources\js\assets\img\illustrations\auth-basic-login-mask-light.png
 
 import authBasicLoginMaskLight from "@/assets/img/illustrations/auth-basic-login-mask-light.png";
 import authBasicLoginMaskDark from "@/assets/img/illustrations/auth-cover-login-mask-dark.png";
 
-// resources/assets/img/illustrations/auth-login-illustration-light.png
 import authLoginIllustrationLight from "@/assets/img/illustrations/auth-login-illustration-light.png";
 import authLoginIllustrationDark from "@/assets/img/illustrations/auth-login-illustration-dark.png";
 
-// illustrations/auth-cover-login-mask-light.png
+import axios from "axios";
 </script>
 
 <template>
@@ -82,7 +80,7 @@ import authLoginIllustrationDark from "@/assets/img/illustrations/auth-login-ill
                 </span>
             </span>
             <span class="app-brand-text demo text-heading fw-semibold"
-                >Materialize</span
+                >Admin</span
             >
         </a>
         <!-- /Logo -->
@@ -108,24 +106,47 @@ import authLoginIllustrationDark from "@/assets/img/illustrations/auth-login-ill
                 class="d-flex col-12 col-lg-5 col-xl-4 align-items-center authentication-bg position-relative py-sm-12 px-12 py-6"
             >
                 <div class="w-px-400 mx-auto pt-5 pt-lg-0">
-                    <h4 class="mb-1">Welcome to Materialize! 👋</h4>
+                    <h4 class="mb-1">Selamat Datang Esoftdream! 👋</h4>
                     <p class="mb-5">
-                        Please sign-in to your account and start the adventure
+                        <!-- Please sign-in to your account and start the adventure -->
+                        Silakan masuk ke akun Anda dan mulai aktivitas Anda
                     </p>
 
                     <div id="formAuthentication" class="mb-5">
+                        <div
+                            class="alert alert-solid-danger"
+                            role="alert"
+                            v-if="errorLogin"
+                        >
+                            {{ errorLogin }}
+                        </div>
+
                         <div class="form-floating form-floating-outline mb-5">
                             <input
                                 type="text"
                                 class="form-control"
-                                v-model="user.member_account_username"
+                                v-model="user.administrator_username"
+                                v-bind:class="{
+                                    'is-invalid': errors.administrator_username,
+                                }"
                                 id="email"
                                 name="email-username"
                                 placeholder="Enter your email or username"
+                                @keyup.enter.prevent="login"
                                 autofocus
                             />
                             <label for="email">Email or Username</label>
+
+                            <div
+                                class="invalid-feedback"
+                                v-if="errors.administrator_username"
+                            >
+                                {{ errors.administrator_username[0] }}
+                                <!-- Show error message -->
+                            </div>
                         </div>
+                        <!-- error -->
+
                         <div class="mb-5">
                             <div class="form-password-toggle">
                                 <div class="input-group input-group-merge">
@@ -137,13 +158,27 @@ import authLoginIllustrationDark from "@/assets/img/illustrations/auth-login-ill
                                             id="password"
                                             class="form-control"
                                             v-model="
-                                                user.member_account_password
+                                                user.administrator_password
                                             "
+                                            v-bind:class="{
+                                                'is-invalid':
+                                                    errors.administrator_password,
+                                            }"
                                             name="password"
                                             placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
                                             aria-describedby="password"
+                                            @keyup.enter.prevent="login"
                                         />
                                         <label for="password">Password</label>
+                                        <div
+                                            class="invalid-feedback"
+                                            v-if="errors.administrator_password"
+                                        >
+                                            {{
+                                                errors.administrator_password[0]
+                                            }}
+                                            <!-- Show error message -->
+                                        </div>
                                     </div>
                                     <span
                                         class="input-group-text cursor-pointer"
@@ -166,60 +201,14 @@ import authLoginIllustrationDark from "@/assets/img/illustrations/auth-login-ill
                                     Remember Me
                                 </label>
                             </div>
-                            <a
-                                href="auth-forgot-password-cover.html"
-                                class="float-end mb-1 mt-2"
-                            >
-                                <span>Forgot Password?</span>
-                            </a>
                         </div>
                         <button
                             class="btn btn-primary d-grid w-100"
                             @click="login"
+                            @keydown.enter.prevent="login"
                         >
                             Sign in
                         </button>
-                    </div>
-
-                    <p class="text-center">
-                        <span>New on our platform?</span>
-                        <a href="auth-register-cover.html">
-                            <span>Create an account</span>
-                        </a>
-                    </p>
-
-                    <div class="divider my-5">
-                        <div class="divider-text">or</div>
-                    </div>
-
-                    <div class="d-flex justify-content-center gap-2">
-                        <a
-                            href="javascript:;"
-                            class="btn btn-icon rounded-circle btn-text-facebook"
-                        >
-                            <i class="tf-icons ri-facebook-fill"></i>
-                        </a>
-
-                        <a
-                            href="javascript:;"
-                            class="btn btn-icon rounded-circle btn-text-twitter"
-                        >
-                            <i class="tf-icons ri-twitter-fill"></i>
-                        </a>
-
-                        <a
-                            href="javascript:;"
-                            class="btn btn-icon rounded-circle btn-text-github"
-                        >
-                            <i class="tf-icons ri-github-fill"></i>
-                        </a>
-
-                        <a
-                            href="javascript:;"
-                            class="btn btn-icon rounded-circle btn-text-google-plus"
-                        >
-                            <i class="tf-icons ri-google-fill"></i>
-                        </a>
                     </div>
                 </div>
             </div>
@@ -228,98 +217,6 @@ import authLoginIllustrationDark from "@/assets/img/illustrations/auth-login-ill
     </div>
 </template>
 
-<style>
-.authentication-wrapper {
-    display: flex;
-    flex-basis: 100%;
-    min-height: 100vh;
-    width: 100%;
-}
-.authentication-wrapper .authentication-inner {
-    width: 100%;
-}
-.authentication-wrapper.authentication-basic {
-    align-items: center;
-    justify-content: center;
-}
-.authentication-wrapper .auth-cover-illustration {
-    z-index: 1;
-    max-inline-size: 38rem;
-}
-.authentication-wrapper .authentication-image {
-    z-index: -1;
-    inline-size: 100%;
-    inset-block-end: 7%;
-    position: absolute;
-    inset-inline-start: 0;
-}
-.authentication-wrapper.authentication-cover {
-    align-items: flex-start;
-}
-.authentication-wrapper.authentication-cover .authentication-inner {
-    min-height: 100vh;
-    position: relative;
-}
-.authentication-wrapper.authentication-cover .authentication-image {
-    inline-size: 70%;
-}
-html:not([dir="rtl"])
-    .authentication-wrapper.authentication-cover
-    .authentication-image {
-    inset-inline-start: unset;
-}
-.authentication-wrapper.authentication-basic .authentication-inner {
-    max-width: 450px;
-}
-.authentication-wrapper .auth-input-wrapper .auth-input {
-    max-width: 50px;
-    padding-left: 0.4rem;
-    padding-right: 0.4rem;
-    font-size: 150%;
-}
-.authentication-wrapper .divider .divider-text {
-    font-size: 0.9375rem;
-}
-
-@media (max-width: 575.98px) {
-    .authentication-wrapper .auth-input-wrapper .auth-input {
-        font-size: 1.125rem;
-    }
-}
-@media (max-width: 1199.98px) {
-    .authentication-cover .authentication-image {
-        inset-block-end: 9%;
-    }
-    [dir="rtl"] .authentication-cover .authentication-image {
-        inline-size: 65%;
-    }
-}
-#twoStepsForm .fv-plugins-bootstrap5-row-invalid .form-control {
-    border-color: #ff4d49;
-}
-
-@media (max-width: 575.98px) {
-    .numeral-mask-wrapper .numeral-mask {
-        padding: 0 !important;
-    }
-    .numeral-mask {
-        margin-inline: 1px !important;
-    }
-}
-.light-style .authentication-wrapper .authentication-bg {
-    background-color: #fff;
-}
-.light-style .authentication-wrapper .divider .divider-text {
-    color: #3b4056;
-}
-
-.dark-style .authentication-wrapper .authentication-bg {
-    background-color: #30334e;
-}
-.dark-style .authentication-wrapper .divider .divider-text {
-    color: #d7d8ed;
-}
-</style>
 <script>
 export default {
     name: "Login",
@@ -327,16 +224,43 @@ export default {
         return {
             errorLogin: false,
             user: {
-                member_account_username: "",
-                member_account_password: "",
+                administrator_username: "",
+                administrator_password: "",
                 remember: false,
             },
+            errors: {
+                administrator_username: null,
+                administrator_password: null,
+            },
+            errorLogin: null,
         };
     },
     methods: {
         async login() {
-            console.log(this.user);
-            await this.$inertia.post("/vo/login", this.user);
+            try {
+                await axios
+                    .post("/admin/auth/login", this.user)
+                    .then((response) => {
+                        this.$inertia.visit("/admin/dashboard/show");
+                    });
+            } catch (error) {
+                // Handle Validation Error
+                if (error.response.data.error === "validation") {
+                    this.errors = error.response.data.data;
+                } else {
+                    this.errorLogin = true;
+                }
+
+                // Handle Error
+                if (error.response.data.error === "error") {
+                    this.errorLogin = error.response.data.message;
+                }
+
+                setTimeout(() => {
+                    this.errorLogin = false;
+                    this.errors = null;
+                }, 5000);
+            }
         },
     },
 };

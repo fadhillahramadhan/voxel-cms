@@ -22,6 +22,8 @@ export default defineConfig({
                 "resources/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css", // DataTables Buttons CSS
                 "resources/assets/vendor/libs/apex-charts/apex-charts.css", // Apex Charts CSS
                 "resources/assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css", // DataTables Checkboxes CSS
+                "resources/assets/css/datatable.css",
+                "resources/assets/css/login.css",
 
                 // JS Files
                 "resources/assets/vendor/js/helpers.js", // Helper JS

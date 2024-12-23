@@ -225,9 +225,9 @@ class TableLib
         $page = $request->page ?? 1;
         $perPage = $request->limit ?? 10;
 
-        // if ($where_condition) {
-        //     $perPage = '999999';
-        // }
+        if ($where_condition) {
+            $perPage = '999999';
+        }
 
         $offset = ($page * $perPage) - $perPage;
 
@@ -245,13 +245,35 @@ class TableLib
             'per_page' => $pages->perPage(),
             'current_page' => $pages->currentPage(),
             'last_page' => $pages->lastPage(),
-            'first_page_url' => $pages->url(1),
-            'last_page_url' => $pages->url($pages->lastPage()),
-            'next_page_url' => $pages->nextPageUrl(),
-            'prev_page_url' => $pages->previousPageUrl(),
             'from' => $pages->firstItem(),
-            'to' => $pages->lastItem()
+            'to' => $pages->lastItem(),
+            // 'details' => $pages->toArray()-
         ];
+
+        $pages_to_array = $pages->onEachSide(1)->toArray();
+
+
+        foreach ($pages_to_array['links'] as $key => $value) {
+            $pagination['links'][$key] = $value;
+
+            if ($value['url']) {
+                $pagination['links'][$key]['value'] = explode('=', $value['url'])[2];
+            } else {
+                $pagination['links'][$key]['value'] = '';
+            }
+
+            // remove raquo and laquo from label
+            $pagination['links'][$key]['label'] = str_replace('&raquo;', '', $pagination['links'][$key]['label']);
+            $pagination['links'][$key]['label'] = str_replace('&laquo;', '', $pagination['links'][$key]['label']);
+
+            unset($pagination['links'][$key]['url']);
+        }
+
+
+        // remove raquo and laquo
+
+        // remove raquo and laquo from label
+
 
 
         $data = new \stdClass;
