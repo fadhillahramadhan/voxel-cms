@@ -16,18 +16,20 @@ import Datatable from "@/shared/components/Datatable.vue";
                 <!-- slot action -->
                 <template #buttonAction="{ selectedIDs }">
                     <button
-                        @click="testData(selectedIDs)"
-                        class="btn btn-danger me-2 btn-xs"
+                        class="btn btn-secondary btn-primary waves-effect waves-light"
+                        tabindex="0"
+                        aria-controls="DataTables_Table_0"
+                        type="button"
                     >
-                        Hapus
+                        <span
+                            ><i
+                                class="ri-add-line ri-16px me-md-2 align-baseline"
+                            ></i
+                            ><span class="d-md-inline-block d-none"
+                                >Create Invoice</span
+                            ></span
+                        >
                     </button>
-                    <!-- Tambah -->
-                    <a
-                        href="/admin/users/create"
-                        class="btn btn-primary btn-xs"
-                    >
-                        Tambah
-                    </a>
                 </template>
 
                 <template #member_name="{ row }">
@@ -86,6 +88,7 @@ export default {
                         key: "action",
                         align: "center",
                         sort: false,
+                        type: "action",
                     },
                 ],
                 multipleSelect: true,

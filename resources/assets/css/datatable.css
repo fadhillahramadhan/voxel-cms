@@ -10,6 +10,8 @@
     text-align: right;
 }
 
+
+
 @media screen and (max-width: 768px) {
 
     /* Hide the table header and display rows as blocks */

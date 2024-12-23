@@ -5,51 +5,124 @@ import axios from "axios";
 
 <template>
     <div class="card full-height-card">
-        <!-- Card Header -->
-        <div class="card-header">
-            <div class="row">
-                <div class="col-12 col-lg-4">
-                    <h5 class="text-md-start text-center">
-                        {{ config.title }}
-                    </h5>
+        <!-- Table Content -->
+        <div class="card-datatable text-nowrap">
+            <!-- <div class="row">
+                <div class="col-sm-12 col-md-4 d-none d-sm-block">
+                    <div class="d-flex align-items-center">
+                        <label> Show </label>
+
+                        <select
+                            class="form-control form-control-sm"
+                          
+                        >
+                            <option
+                                v-for="option in config.options.limit"
+                                :key="option"
+                                :value="option"
+                            >
+                                {{ option }}
+                            </option>
+                        </select>
+                    </div>
                 </div>
-                <div class="col-12 col-lg-4"></div>
-                <div class="col-12 col-lg-4">
+                <div class="col-12 col-lg-5">
+                </div>
+
+                <div class="col-12 col-lg-3">
                     <div
-                        class="flex-grow-1 input-group input-group-sm input-group-merge rounded-pill"
+                        class="flex-grow-1 input-group input-group-sm input-group-merge"
                     >
                         <span class="input-group-text">
                             <i class="ri-search-line lh-1 ri-20px"></i>
                         </span>
                         <input
                             type="text"
-                            class="form-control chat-search-input"
+                            class="form-control"
                             placeholder="Search..."
                             @input="onSearch"
                         />
                         <span class="input-group-text">
-                            <i class="ri-add-line lh-1 ri-20px clickable"></i>
+                            <i
+                                class="ri-add-line lh-1 ri-20px clickable"
+                                data-bs-toggle="modal"
+                                data-bs-target="#datatableSearch"
+                            ></i>
                         </span>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <!-- Action Buttons -->
-        <div class="row">
-            <div class="col-sm-12">
-                <div
-                    class="justify-content-sm-center align-items-center justify-content-md-end d-flex p-5"
-                    id="btn-container"
-                >
-                    <slot name="buttonAction" :selectedIDs="selectedIDs" />
-                </div>
-            </div>
-        </div>
-
-        <!-- Table Content -->
-        <div class="card-datatable text-nowrap">
+            </div> -->
             <div class="dataTables_wrapper dt-bootstrap5 no-footer">
+                <div class="row mx-1">
+                    <div
+                        class="col-12 col-md-6 d-flex align-items-center justify-content-center justify-content-md-start gap-4 mt-md-0 mt-5"
+                    >
+                        <div
+                            class="dataTables_length"
+                            id="DataTables_Table_0_length"
+                        >
+                            <label
+                                >Show
+                                <select
+                                    name="DataTables_Table_0_length"
+                                    aria-controls="DataTables_Table_0"
+                                    class="form-select form-select-sm"
+                                    v-model.number="config.options.currentLimit"
+                                    @change="fetchData"
+                                >
+                                    <option
+                                        v-for="option in config.options.limit"
+                                        :key="option"
+                                        :value="option"
+                                    >
+                                        {{ option }}
+                                    </option>
+                                </select></label
+                            >
+                        </div>
+                        <div
+                            class="dt-action-buttons text-xl-end text-lg-start text-md-end text-start"
+                        >
+                            <div class="dt-buttons btn-group flex-wrap">
+                                <slot
+                                    name="buttonAction"
+                                    :selectedIDs="selectedIDs"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="col-12 col-md-6 d-flex align-items-center justify-content-end flex-column flex-md-row pe-3 gap-md-4"
+                    >
+                        <div
+                            id="DataTables_Table_0_filter"
+                            class="dataTables_filter"
+                        >
+                            <div
+                                class="flex-grow-1 input-group input-group-sm input-group-merge"
+                            >
+                                <span class="input-group-text">
+                                    <i class="ri-search-line lh-1 ri-20px"></i>
+                                </span>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    placeholder="Search..."
+                                    @input="onSearch"
+                                />
+                                <span class="input-group-text">
+                                    <i
+                                        class="ri-add-line lh-1 ri-20px clickable"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#datatableSearch"
+                                    ></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="invoice_status mb-5 mb-md-0"></div>
+                    </div>
+                </div>
+
                 <table
                     class="datatables-ajax table dataTable no-footer cstm-table table-hover mt-3 table-sm"
                 >
@@ -125,25 +198,15 @@ import axios from "axios";
 
                 <!-- Pagination -->
                 <div class="row">
-                    <div class="col-sm-12 col-md-6 d-none d-sm-block">
-                        <div class="dataTables_length">
-                            <label>
-                                Show
-                                <select
-                                    class="form-control form-control-sm"
-                                    v-model.number="config.options.currentLimit"
-                                    @change="fetchData"
-                                >
-                                    <option
-                                        v-for="option in config.options.limit"
-                                        :key="option"
-                                        :value="option"
-                                    >
-                                        {{ option }}
-                                    </option>
-                                </select>
-                                entries
-                            </label>
+                    <div class="col-sm-12 col-md-6">
+                        <div
+                            class="dataTables_info"
+                            id="DataTables_Table_0_info"
+                            role="status"
+                            aria-live="polite"
+                        >
+                            Menampilkan {{ pagination.from }} sampai
+                            {{ pagination.to }} dari {{ pagination.total }} data
                         </div>
                     </div>
                     <div
@@ -179,6 +242,68 @@ import axios from "axios";
     </div>
 
     <!-- Modal -->
+    <div
+        class="modal fade"
+        id="datatableSearch"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false"
+        tabindex="-1"
+        aria-labelledby="datatableSearchLabel"
+        aria-hidden="true"
+    >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="datatableSearchLabel">
+                        Pencarian
+                    </h5>
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                    ></button>
+                </div>
+                <div class="modal-body">
+                    <!-- based on that create input dynamic -->
+                    <div class="form-group" v-for="column in config.columns">
+                        <label
+                            :for="column.key"
+                            v-if="
+                                column.type === 'text' || column.type === 'date'
+                            "
+                            >{{ column.label }}</label
+                        >
+                        <input
+                            type="text"
+                            class="form-control"
+                            :id="column.key"
+                            v-if="column.type === 'text'"
+                            v-model="searchAdvanced[column.key + '[substring]']"
+                        />
+                        <!-- if date theres 2 input start and end -->
+                        <input
+                            type="date"
+                            class="form-control"
+                            :id="column.key"
+                            v-if="column.type === 'date'"
+                            v-model="searchAdvanced[column.key + '[gte]']"
+                        />
+
+                        <input
+                            type="date"
+                            class="form-control"
+                            :id="column.key"
+                            v-if="column.type === 'date'"
+                            v-model="searchAdvanced[column.key + '[lte]']"
+                        />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
 </template>
 
 <script>
@@ -207,6 +332,7 @@ export default {
             selectedRows: {},
             // sort
             sortedColumn: {},
+            searchAdvanced: {},
         };
     },
     computed: {
