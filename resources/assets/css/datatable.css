@@ -77,12 +77,22 @@
 
     /* give tr bottom  border */
     tr.tb-responsive {
-        border-top: 2px solid #ddd;
         border-bottom: 5px solid #ddd;
     }
 
     #btn-container {
         justify-content: left;
         padding: 0.5rem !important;
+    }
+
+    #label-checkbox-datatable {
+        display: block !important;
+        width: 99% !important;
+    }
+
+    .container-checkbox-datatable {
+        display: flex !important;
+        justify-content: space-around !important;
+        text-align: left !important;
     }
 }

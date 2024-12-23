@@ -255,18 +255,23 @@ class TableLib
 
         foreach ($pages_to_array['links'] as $key => $value) {
             $pagination['links'][$key] = $value;
+            $pagination['links'][$key]['label'] = str_replace('&raquo;', '', $pagination['links'][$key]['label']);
+            $pagination['links'][$key]['label'] = str_replace('&laquo;', '', $pagination['links'][$key]['label']);
+            // remove space also
+            $pagination['links'][$key]['label'] = trim($pagination['links'][$key]['label']);
 
-            if ($value['url']) {
-                $pagination['links'][$key]['value'] = explode('=', $value['url'])[2];
-            } else {
-                $pagination['links'][$key]['value'] = '';
+            $pagination['links'][$key]['value'] = (int) $value['label'];
+
+            // if Previous or Next
+            if ($pagination['links'][$key]['label']  == 'Previous') {
+                $pagination['links'][$key]['value'] = $pagination['current_page'] - 1;
+            }
+
+            if ($pagination['links'][$key]['label']  == 'Next') {
+                $pagination['links'][$key]['value'] = $pagination['current_page'] + 1;
             }
 
             // remove raquo and laquo from label
-            $pagination['links'][$key]['label'] = str_replace('&raquo;', '', $pagination['links'][$key]['label']);
-            $pagination['links'][$key]['label'] = str_replace('&laquo;', '', $pagination['links'][$key]['label']);
-
-            unset($pagination['links'][$key]['url']);
         }
 
 

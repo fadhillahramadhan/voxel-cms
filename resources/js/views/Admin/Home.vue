@@ -17,27 +17,33 @@ import Datatable from "@/shared/components/Datatable.vue";
                 <template #buttonAction="{ selectedIDs }">
                     <button
                         @click="testData(selectedIDs)"
-                        class="btn btn-outline-danger me-2 btn-xs"
+                        class="btn btn-danger me-2 btn-xs"
                     >
                         Hapus
                     </button>
-                    <button
-                        @click="testData(selectedIDs)"
-                        class="btn btn-outline-primary me-2 btn-xs"
+                    <!-- Tambah -->
+                    <a
+                        href="/admin/users/create"
+                        class="btn btn-primary btn-xs"
                     >
-                        Edit
-                    </button>
+                        Tambah
+                    </a>
                 </template>
 
-                <template #name="{ row }">
-                    <a :href="`/admin/users/${row.id}`">{{ row.name }}</a>
+                <template #member_name="{ row }">
+                    <a :href="`/admin/users/${row.member_id}`">{{
+                        row.member_name
+                    }}</a>
                 </template>
 
                 <template #action="{ row }">
-                    <i
+                    <!-- <i
                         @click="edit(row)"
                         class="ri-edit-line text-primary cursor-pointer"
-                    ></i>
+                    ></i> -->
+                    <button @click="edit(row)" class="btn btn-primary btn-xs">
+                        Update
+                    </button>
                 </template>
             </Datatable>
         </div>
@@ -49,36 +55,36 @@ export default {
     data() {
         return {
             table: {
+                selectID: "member_id",
                 title: "List Users",
                 searchTitle: "Search User",
                 url: "datatable",
-                selectID: "member_id",
                 columns: [
                     {
+                        label: "Nama Lengkap",
                         key: "member_name",
-                        label: "Name",
                         align: "left",
                         sort: true,
                         type: "text",
                     },
                     {
-                        key: "member_email",
                         label: "Email",
+                        key: "member_email",
                         align: "left",
                         sort: true,
                         type: "text",
                     },
                     {
+                        label: "No. HP",
                         key: "member_mobile_phone",
-                        label: "Phone",
                         align: "left",
                         sort: true,
                         type: "date",
                     },
                     {
+                        label: "Aksi",
                         key: "action",
                         align: "center",
-                        label: "Aksi",
                         sort: false,
                     },
                 ],
@@ -92,12 +98,10 @@ export default {
     },
     methods: {
         edit(row) {
-            console.log(row);
-            alert("Edit");
+            alert(JSON.stringify(row));
         },
         testData(row) {
-            console.log(row);
-            alert("Test Data");
+            alert(JSON.stringify(row));
         },
     },
 

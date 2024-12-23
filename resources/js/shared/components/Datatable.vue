@@ -42,11 +42,7 @@ import axios from "axios";
                     class="justify-content-sm-center align-items-center justify-content-md-end d-flex p-5"
                     id="btn-container"
                 >
-                    <slot
-                        name="buttonAction"
-                        :selectedRows="selectedRows"
-                        :selectedIDs="selectedIDs"
-                    />
+                    <slot name="buttonAction" :selectedIDs="selectedIDs" />
                 </div>
             </div>
         </div>
@@ -60,10 +56,11 @@ import axios from "axios";
                     <thead>
                         <tr>
                             <th v-if="config.multipleSelect">
+                                <!-- label pilih -->
                                 <input
                                     type="checkbox"
                                     class="form-check-input"
-                                    v-model="selected_all"
+                                    v-model="selectedAll"
                                     @change="selectAll"
                                 />
                             </th>
@@ -84,7 +81,17 @@ import axios from "axios";
                             :key="row[config.selectID]"
                             class="tb-responsive"
                         >
-                            <td v-if="config.multipleSelect">
+                            <td
+                                v-if="config.multipleSelect"
+                                class="container-checkbox-datatable"
+                            >
+                                <div
+                                    class="d-none"
+                                    id="label-checkbox-datatable"
+                                >
+                                    <b> Pilih</b>
+                                </div>
+
                                 <input
                                     type="checkbox"
                                     v-model="selectedRows[row[config.selectID]]"
@@ -156,9 +163,7 @@ import axios from "axios";
                                     ]"
                                 >
                                     <a
-                                        v-if="
-                                            link.value || link.label === '...'
-                                        "
+                                        v-if="link.url || link.label === '...'"
                                         class="page-link waves-effect"
                                         @click.prevent="fetchData(link.value)"
                                     >
@@ -172,6 +177,8 @@ import axios from "axios";
             </div>
         </div>
     </div>
+
+    <!-- Modal -->
 </template>
 
 <script>
@@ -191,11 +198,15 @@ export default {
     },
     data() {
         return {
+            config: this.tables,
+            // Table data
             results: [],
             pagination: {},
-            config: this.tables,
+            // Selected rows
+            selectedAll: false,
             selectedRows: {},
-            selected_all: false,
+            // sort
+            sortedColumn: {},
         };
     },
     computed: {
@@ -204,15 +215,26 @@ export default {
                 (key) => this.selectedRows[key]
             );
         },
+        selectedData() {
+            return this.results.filter((key) => this.results[key]);
+        },
     },
     methods: {
         fetchData(page = 1) {
-            this.selected_all = false;
+            if (typeof page !== "number") {
+                console.error("Invalid page number:", page);
+                return;
+            }
+
+            this.selectedAll = false;
             this.selectedRows = {};
+
+            console.log(this.config.options.currentLimit);
 
             axios
                 .get(this.config.url, {
                     params: {
+                        sort: this.sortedColumn,
                         limit: this.config.options.currentLimit,
                         page,
                     },
@@ -230,11 +252,16 @@ export default {
             if (column?.sort) {
                 column.sorting = column.sorting === "asc" ? "desc" : "asc";
             }
+
+            this.sortedColumn[key] = column.sorting;
+
+            console.log("Sorted Column", this.sortedColumn);
+
+            this.fetchData();
         },
         selectAll() {
             this.results.forEach((row) => {
-                this.selectedRows[row[this.config.selectID]] =
-                    this.selected_all;
+                this.selectedRows[row[this.config.selectID]] = this.selectedAll;
             });
         },
         getColumnClass(column) {
@@ -252,7 +279,7 @@ export default {
             console.log("Search query:", query);
         },
     },
-    created() {
+    mounted() {
         this.fetchData();
     },
 };
