@@ -78,29 +78,19 @@ import axios from "axios";
                     </div>
                 </div>
                 <!-- row badge search and remove filter -->
-                {{ searchAdvanced }}
-                <div class="row">
+                <!-- {{ searchAdvanced }} -->
+                <div class="row mx-1">
                     <div class="col-12">
-                        <div class="badge badge-soft-primary">
-                            <span class="me-1">Filter:</span>
-                            <span
-                                v-for="(value, key) in searchAdvanced"
-                                :key="key"
-                                class="badge badge-soft-primary me-1"
-                            >
-                                {{ key }}: {{ value }}
-                                <span
-                                    @click="
-                                        searchAdvanced = {
-                                            ...searchAdvanced,
-                                            [key]: null,
-                                        }
-                                    "
-                                    class="badge-close"
-                                    >&times;</span
-                                >
-                            </span>
-                        </div>
+                        <!-- MAKE IT DIFF COLOR -->
+                        <button
+                            class="badge rounded-pill bg-primary mb-2"
+                            :key="key"
+                            v-for="(filter, key) in currentFilter"
+                            @click.prevent="removeFilter(filter)"
+                        >
+                            {{ filter.title }}: {{ filter.value }}
+                            <i class="ri-close-line clickable"></i>
+                        </button>
                     </div>
                 </div>
                 <table
@@ -163,7 +153,7 @@ import axios from "axios";
                                     <slot :name="column.key" :row="row" />
                                 </template>
                                 <template v-else>
-                                    {{ row[column.key] }}
+                                    {{ row[column.key] ?? "-" }}
                                 </template>
                             </td>
                         </tr>
@@ -355,6 +345,23 @@ export default {
         selectedData() {
             return this.results.filter((key) => this.results[key]);
         },
+        currentFilter() {
+            return Object.keys(this.searchAdvanced).map((key) => {
+                // key would be like this member_name[substring] or some other like this member_activation_datetime[gte]
+
+                const [newKey] = key.split("[");
+                const column = this.config.columns.find(
+                    (col) => col.key === newKey
+                );
+
+                return {
+                    key: newKey,
+                    real_key: key,
+                    title: column.label,
+                    value: this.searchAdvanced[key],
+                };
+            });
+        },
     },
     methods: {
         fetchData(page = 1) {
@@ -420,7 +427,11 @@ export default {
         onSearch(event) {
             // Handle search logic here
             const query = event.target.value;
-            console.log("Search query:", query);
+        },
+        removeFilter(filter) {
+            delete this.searchAdvanced[filter.real_key];
+
+            this.fetchData();
         },
     },
     mounted() {

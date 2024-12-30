@@ -4,7 +4,7 @@
             <div
                 class="footer-container d-flex align-items-center justify-content-between py-4 flex-md-row flex-column"
             >
-                <div class="text-body mb-2 mb-md-0">
+                <!-- <div class="text-body mb-2 mb-md-0">
                     made with
                     <span class="text-danger"
                         ><i class="tf-icons ri-heart-fill"></i
@@ -14,10 +14,10 @@
                         href="https://pixinvent.com"
                         target="_blank"
                         class="footer-link"
-                        >Pixinvent</a
+                        >Esoftdream</a
                     >
-                </div>
-                <div class="d-none d-lg-inline-block">
+                </div> -->
+                <!-- <div class="d-none d-lg-inline-block">
                     <a
                         href="https://themeforest.net/licenses/standard"
                         class="footer-link me-4"
@@ -44,7 +44,7 @@
                         class="footer-link d-none d-sm-inline-block"
                         >Support</a
                     >
-                </div>
+                </div> -->
             </div>
         </div>
     </footer>
