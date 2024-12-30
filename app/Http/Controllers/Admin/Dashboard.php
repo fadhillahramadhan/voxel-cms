@@ -38,6 +38,7 @@ class Dashboard extends Controller
                 'member_name',
                 'member_email',
                 'member_mobilephone' => 'member_mobile_phone',
+                'member_activation_datetime'
             ];
 
 

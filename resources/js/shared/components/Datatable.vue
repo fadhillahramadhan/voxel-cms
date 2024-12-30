@@ -77,7 +77,32 @@ import axios from "axios";
                         <div class="invoice_status mb-5 mb-md-0"></div>
                     </div>
                 </div>
-
+                <!-- row badge search and remove filter -->
+                {{ searchAdvanced }}
+                <div class="row">
+                    <div class="col-12">
+                        <div class="badge badge-soft-primary">
+                            <span class="me-1">Filter:</span>
+                            <span
+                                v-for="(value, key) in searchAdvanced"
+                                :key="key"
+                                class="badge badge-soft-primary me-1"
+                            >
+                                {{ key }}: {{ value }}
+                                <span
+                                    @click="
+                                        searchAdvanced = {
+                                            ...searchAdvanced,
+                                            [key]: null,
+                                        }
+                                    "
+                                    class="badge-close"
+                                    >&times;</span
+                                >
+                            </span>
+                        </div>
+                    </div>
+                </div>
                 <table
                     class="datatables-ajax table dataTable no-footer cstm-table table-hover mt-3 table-sm"
                 >
@@ -229,18 +254,20 @@ import axios from "axios";
                             v-if="
                                 column.type === 'text' || column.type === 'date'
                             "
+                            :placeholder="'Cari ' + column.label"
                             >{{ column.label }}</label
                         >
                         <input
                             type="text"
-                            class="form-control"
+                            class="form-control mb-3"
                             :id="column.key"
                             v-if="column.type === 'text'"
+                            :placeholder="'Cari ' + column.label"
                             v-model="searchAdvanced[column.key + '[substring]']"
                         />
                         <!-- if date theres 2 input start and end -->
 
-                        <div class="row">
+                        <div class="row mb-3" v-if="column.type === 'date'">
                             <div class="col-6">
                                 <input
                                     type="date"
@@ -277,6 +304,7 @@ import axios from "axios";
                     <button
                         type="button"
                         class="btn btn-primary"
+                        data-bs-dismiss="modal"
                         @click="fetchData"
                     >
                         Search
@@ -334,14 +362,24 @@ export default {
                 page = 1;
             }
 
+            // close modal search
+
             this.selectedAll = false;
             this.selectedRows = {};
+
+            // remove searchAdvance obj if empty
+            Object.keys(this.searchAdvanced).forEach((key) => {
+                if (!this.searchAdvanced[key]) {
+                    delete this.searchAdvanced[key];
+                }
+            });
 
             axios
                 .get(this.config.url, {
                     params: {
                         sort: this.sortedColumn,
                         limit: this.config.options.currentLimit,
+                        ...this.searchAdvanced,
                         page,
                     },
                 })

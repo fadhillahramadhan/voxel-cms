@@ -75,6 +75,13 @@ export default {
                         key: "member_mobile_phone",
                         align: "left",
                         sort: true,
+                        type: "text",
+                    },
+                    {
+                        label: "Dibuat Dari",
+                        key: "member_activation_datetime",
+                        align: "left",
+                        sort: true,
                         type: "date",
                     },
                     {
