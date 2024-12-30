@@ -387,13 +387,22 @@ export default {
         },
         sort(key) {
             const column = this.config.columns.find((col) => col.key === key);
+
             if (column?.sort) {
                 column.sorting = column.sorting === "asc" ? "desc" : "asc";
             }
 
             this.sortedColumn[key] = column.sorting;
 
-            console.log("Sorted Column", this.sortedColumn);
+            // remove sorting from other column
+            this.config.columns.forEach((col) => {
+                if (col.key !== key) {
+                    delete this.sortedColumn[col.key];
+                    delete col.sorting;
+                }
+            });
+
+            console.log(this.sortedColumn);
 
             this.fetchData();
         },
