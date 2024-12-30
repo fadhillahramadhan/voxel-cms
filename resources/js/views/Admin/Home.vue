@@ -38,12 +38,36 @@ import Datatable from "@/shared/components/Datatable.vue";
                 </template>
 
                 <template #action="{ row }">
-                    <button
-                        @click="edit(row)"
+                    <!-- <button
                         class="btn btn-secondary btn-sm btn-primary waves-effect waves-light"
                     >
                         Edit
                     </button>
+                     -->
+                    <div class="dropdown">
+                        <button
+                            type="button"
+                            class="btn p-0 dropdown-toggle hide-arrow"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                        >
+                            <i class="ri-more-2-line"></i>
+                        </button>
+                        <div class="dropdown-menu" style="">
+                            <a
+                                class="dropdown-item waves-effect"
+                                href="javascript:void(0);"
+                                @click="edit(row)"
+                                ><i class="ri-pencil-line me-1"></i> Edit</a
+                            >
+                            <a
+                                class="dropdown-item waves-effect"
+                                href="javascript:void(0);"
+                                ><i class="ri-delete-bin-7-line me-1"></i>
+                                Delete</a
+                            >
+                        </div>
+                    </div>
                 </template>
             </Datatable>
         </div>

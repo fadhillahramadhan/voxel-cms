@@ -47,7 +47,7 @@ import axios from "axios";
                         </div>
                     </div>
                     <div
-                        class="col-12 col-md-6 d-flex align-items-center justify-content-end flex-column flex-md-row pe-3 gap-md-4"
+                        class="col-12 col-md-6 d-flex align-items-center justify-content-end flex-column flex-md-row"
                     >
                         <div
                             id="DataTables_Table_0_filter"
@@ -67,7 +67,7 @@ import axios from "axios";
                                 />
                                 <span class="input-group-text">
                                     <i
-                                        class="ri-add-line lh-1 ri-20px clickable"
+                                        class="ri-equalizer-line lh-1 ri-20px clickable"
                                         data-bs-toggle="modal"
                                         data-bs-target="#datatableSearch"
                                     ></i>
@@ -245,13 +245,15 @@ import axios from "axios";
                                 column.type === 'text' || column.type === 'date'
                             "
                             :placeholder="'Cari ' + column.label"
-                            >{{ column.label }}</label
-                        >
+                            @change="fetchData"
+                            >{{ column.label }}
+                        </label>
                         <input
                             type="text"
                             class="form-control mb-3"
                             :id="column.key"
                             v-if="column.type === 'text'"
+                            @change="fetchData"
                             :placeholder="'Cari ' + column.label"
                             v-model="searchAdvanced[column.key + '[substring]']"
                         />
@@ -264,6 +266,7 @@ import axios from "axios";
                                     class="form-control"
                                     :id="column.key"
                                     v-if="column.type === 'date'"
+                                    @change="fetchData"
                                     v-model="
                                         searchAdvanced[column.key + '[gte]']
                                     "
@@ -274,6 +277,7 @@ import axios from "axios";
                                     type="date"
                                     class="form-control"
                                     :id="column.key"
+                                    @change="fetchData"
                                     v-if="column.type === 'date'"
                                     v-model="
                                         searchAdvanced[column.key + '[lte]']
@@ -282,23 +286,6 @@ import axios from "axios";
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button
-                        type="button"
-                        class="btn btn-secondary"
-                        data-bs-dismiss="modal"
-                    >
-                        Close
-                    </button>
-                    <button
-                        type="button"
-                        class="btn btn-primary"
-                        data-bs-dismiss="modal"
-                        @click="fetchData"
-                    >
-                        Search
-                    </button>
                 </div>
             </div>
         </div>
