@@ -425,7 +425,6 @@ export default {
             return column.align ? `text-${column.align}` : "";
         },
         onSearch(event) {
-            // Handle search logic here
             const query = event.target.value;
         },
         removeFilter(filter) {

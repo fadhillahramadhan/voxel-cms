@@ -16,7 +16,7 @@ import Datatable from "@/shared/components/Datatable.vue";
                 <!-- slot action -->
                 <template #buttonAction="{ selectedIDs }">
                     <button
-                        class="btn btn-secondary btn-primary waves-effect waves-light"
+                        class="btn btn-sm btn-secondary btn-primary waves-effect waves-light"
                         tabindex="0"
                         aria-controls="DataTables_Table_0"
                         type="button"
@@ -38,8 +38,11 @@ import Datatable from "@/shared/components/Datatable.vue";
                 </template>
 
                 <template #action="{ row }">
-                    <button @click="edit(row)" class="btn btn-primary btn-xs">
-                        Update
+                    <button
+                        @click="edit(row)"
+                        class="btn btn-secondary btn-sm btn-primary waves-effect waves-light"
+                    >
+                        Edit
                     </button>
                 </template>
             </Datatable>
