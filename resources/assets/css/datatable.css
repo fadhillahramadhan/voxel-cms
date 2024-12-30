@@ -97,4 +97,8 @@
         justify-content: space-around !important;
         text-align: left !important;
     }
+
+    .dataTables_info {
+        zoom: 60%;
+    }
 }

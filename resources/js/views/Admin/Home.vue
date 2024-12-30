@@ -20,14 +20,13 @@ import Datatable from "@/shared/components/Datatable.vue";
                         tabindex="0"
                         aria-controls="DataTables_Table_0"
                         type="button"
+                        @click="testData(selectedIDs)"
                     >
                         <span
                             ><i
                                 class="ri-add-line ri-16px me-md-2 align-baseline"
                             ></i
-                            ><span class="d-md-inline-block d-none"
-                                >Create Invoice</span
-                            ></span
+                            ><span>Create Invoice</span></span
                         >
                     </button>
                 </template>
@@ -39,10 +38,6 @@ import Datatable from "@/shared/components/Datatable.vue";
                 </template>
 
                 <template #action="{ row }">
-                    <!-- <i
-                        @click="edit(row)"
-                        class="ri-edit-line text-primary cursor-pointer"
-                    ></i> -->
                     <button @click="edit(row)" class="btn btn-primary btn-xs">
                         Update
                     </button>
@@ -58,7 +53,6 @@ export default {
         return {
             table: {
                 selectID: "member_id",
-                title: "List Users",
                 searchTitle: "Search User",
                 url: "datatable",
                 columns: [

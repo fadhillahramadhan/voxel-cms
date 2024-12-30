@@ -7,51 +7,6 @@ import axios from "axios";
     <div class="card full-height-card">
         <!-- Table Content -->
         <div class="card-datatable text-nowrap">
-            <!-- <div class="row">
-                <div class="col-sm-12 col-md-4 d-none d-sm-block">
-                    <div class="d-flex align-items-center">
-                        <label> Show </label>
-
-                        <select
-                            class="form-control form-control-sm"
-                          
-                        >
-                            <option
-                                v-for="option in config.options.limit"
-                                :key="option"
-                                :value="option"
-                            >
-                                {{ option }}
-                            </option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-12 col-lg-5">
-                </div>
-
-                <div class="col-12 col-lg-3">
-                    <div
-                        class="flex-grow-1 input-group input-group-sm input-group-merge"
-                    >
-                        <span class="input-group-text">
-                            <i class="ri-search-line lh-1 ri-20px"></i>
-                        </span>
-                        <input
-                            type="text"
-                            class="form-control"
-                            placeholder="Search..."
-                            @input="onSearch"
-                        />
-                        <span class="input-group-text">
-                            <i
-                                class="ri-add-line lh-1 ri-20px clickable"
-                                data-bs-toggle="modal"
-                                data-bs-target="#datatableSearch"
-                            ></i>
-                        </span>
-                    </div>
-                </div>
-            </div> -->
             <div class="dataTables_wrapper dt-bootstrap5 no-footer">
                 <div class="row mx-1">
                     <div
@@ -174,7 +129,9 @@ import axios from "axios";
                             <td
                                 v-for="column in config.columns"
                                 :key="column.key"
-                                :data-label="column.label"
+                                :data-label="
+                                    column.label !== 'Aksi' ? column.label : ''
+                                "
                                 :class="getAlignmentClass(column)"
                             >
                                 <template v-if="$slots[column.key]">
@@ -282,22 +239,48 @@ import axios from "axios";
                             v-model="searchAdvanced[column.key + '[substring]']"
                         />
                         <!-- if date theres 2 input start and end -->
-                        <input
-                            type="date"
-                            class="form-control"
-                            :id="column.key"
-                            v-if="column.type === 'date'"
-                            v-model="searchAdvanced[column.key + '[gte]']"
-                        />
 
-                        <input
-                            type="date"
-                            class="form-control"
-                            :id="column.key"
-                            v-if="column.type === 'date'"
-                            v-model="searchAdvanced[column.key + '[lte]']"
-                        />
+                        <div class="row">
+                            <div class="col-6">
+                                <input
+                                    type="date"
+                                    class="form-control"
+                                    :id="column.key"
+                                    v-if="column.type === 'date'"
+                                    v-model="
+                                        searchAdvanced[column.key + '[gte]']
+                                    "
+                                />
+                            </div>
+                            <div class="col-6">
+                                <input
+                                    type="date"
+                                    class="form-control"
+                                    :id="column.key"
+                                    v-if="column.type === 'date'"
+                                    v-model="
+                                        searchAdvanced[column.key + '[lte]']
+                                    "
+                                />
+                            </div>
+                        </div>
                     </div>
+                </div>
+                <div class="modal-footer">
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal"
+                    >
+                        Close
+                    </button>
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        @click="fetchData"
+                    >
+                        Search
+                    </button>
                 </div>
             </div>
         </div>
@@ -348,14 +331,11 @@ export default {
     methods: {
         fetchData(page = 1) {
             if (typeof page !== "number") {
-                console.error("Invalid page number:", page);
-                return;
+                page = 1;
             }
 
             this.selectedAll = false;
             this.selectedRows = {};
-
-            console.log(this.config.options.currentLimit);
 
             axios
                 .get(this.config.url, {

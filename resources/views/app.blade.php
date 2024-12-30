@@ -53,7 +53,6 @@
 
     @inertiaHead
 
-
     <style>
         /* give good scrollbar */
         ::-webkit-scrollbar {
