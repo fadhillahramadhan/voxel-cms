@@ -124,6 +124,7 @@ import axios from "axios";
                             :key="row[config.selectID]"
                             class="tb-responsive"
                         >
+                            <!-- if not md or above -->
                             <td
                                 v-if="config.multipleSelect"
                                 class="container-checkbox-datatable"
@@ -144,9 +145,7 @@ import axios from "axios";
                             <td
                                 v-for="column in config.columns"
                                 :key="column.key"
-                                :data-label="
-                                    column.label !== 'Aksi' ? column.label : ''
-                                "
+                                :data-label="column.label"
                                 :class="getAlignmentClass(column)"
                             >
                                 <template v-if="$slots[column.key]">

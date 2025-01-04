@@ -25,28 +25,6 @@ Route::get('/', function () {
     return redirect('/admin/login');
 });
 
-Route::middleware([HandleInertiaRequests::class])->group(function () {
-    Route::get('/vo/login', [Login::class, 'show_login']);
-    Route::post('/vo/login', [Login::class, 'login']);
-});
-
-
-Route::any('/vo/logout', function () {
-    session()->forget('member');
-
-    return redirect('/vo/login');
-});
-
-Route::group(['middleware' => [EnsureMemberValid::class]], function () {
-    Route::any('/vo/dashboard/{method}', [Dashboard::class, 'dynamicMethod'])
-        ->where('method', '.*');
-
-    Route::any('/vo/registration/{method}', [Registration::class, 'dynamicMethod'])
-        ->where('method', '.*');
-});
-// End Vo Routes
-
-
 // Admin Routes
 Route::get('/admin/login', [AdminLogin::class, 'show_login'])->name('login');
 Route::post('/admin/auth/login', [AdminLogin::class, 'login'])->withoutMiddleware('csrf');

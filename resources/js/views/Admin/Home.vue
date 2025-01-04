@@ -15,20 +15,34 @@ import Datatable from "@/shared/components/Datatable.vue";
             <Datatable :tables="table">
                 <!-- slot action -->
                 <template #buttonAction="{ selectedIDs }">
-                    <button
-                        class="btn btn-sm btn-secondary btn-primary waves-effect waves-light"
-                        tabindex="0"
-                        aria-controls="DataTables_Table_0"
-                        type="button"
-                        @click="testData(selectedIDs)"
-                    >
-                        <span
-                            ><i
-                                class="ri-add-line ri-16px me-md-2 align-baseline"
-                            ></i
-                            ><span>Create Invoice</span></span
-                        >
-                    </button>
+                    <div class="card-header-elements ms-sm-auto">
+                        <div class="btn-group">
+                            <button
+                                type="button"
+                                class="btn btn-secondary buttons-collection dropdown-toggle btn-outline-secondary waves-effect waves-light"
+                                data-bs-toggle="dropdown"
+                                data-bs-reference="parent"
+                                aria-expanded="false"
+                            >
+                                <span class="d-flex align-items-center">
+                                    Aksi
+                                </span>
+                            </button>
+                            <div class="dropdown-menu" style="">
+                                <a
+                                    class="dt-button dropdown-item buttons-print"
+                                    tabindex="0"
+                                    aria-controls="DataTables_Table_0"
+                                    @click="testData(selectedIDs)"
+                                    href="#"
+                                    ><span
+                                        ><i class="ri-printer-line me-1"></i
+                                        >Print</span
+                                    ></a
+                                >
+                            </div>
+                        </div>
+                    </div>
                 </template>
 
                 <template #member_name="{ row }">
@@ -38,12 +52,6 @@ import Datatable from "@/shared/components/Datatable.vue";
                 </template>
 
                 <template #action="{ row }">
-                    <!-- <button
-                        class="btn btn-secondary btn-sm btn-primary waves-effect waves-light"
-                    >
-                        Edit
-                    </button>
-                     -->
                     <div class="dropdown">
                         <button
                             type="button"
@@ -133,6 +141,8 @@ export default {
         },
         testData(row) {
             alert(JSON.stringify(row));
+            // trigger fetchData from Datatable.vue
+            // this.$refs.datatable.fetchData();
         },
     },
 
