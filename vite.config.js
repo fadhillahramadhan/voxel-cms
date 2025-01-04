@@ -8,7 +8,6 @@ export default defineConfig({
         laravel({
             input: [
                 // CSS Files
-                "resources/css/app.css", // Your global app.css
                 "resources/assets/vendor/fonts/remixicon/remixicon.css", // Font icons
                 "resources/assets/vendor/fonts/flag-icons.css", // Flag icons
                 "resources/assets/vendor/libs/node-waves/node-waves.css", // Node Waves CSS
