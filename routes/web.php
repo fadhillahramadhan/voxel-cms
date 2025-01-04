@@ -22,7 +22,8 @@ use GuzzleHttp\Psr7\Request;
 
 // FORWARD / INTO ADMIN
 Route::get('/', function () {
-    return redirect('/admin/login');
+    // return to welcome page
+    return view('welcome');
 });
 
 // Admin Routes
