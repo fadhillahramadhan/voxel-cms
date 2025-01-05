@@ -14,9 +14,8 @@ import Icon from "@/assets/icons/icons.png";
                 max-width="250px"
                 style="margin-top: -10px; margin-right: -30px"
             ></v-img>
-
-            <!-- Navigation Links -->
-            <v-btn-group>
+            <!-- Navigation Links only if md -up -->
+            <v-btn-group v-if="$vuetify.display.mdAndUp">
                 <v-btn text href="/">Home</v-btn>
                 <!-- authors -->
                 <v-btn text href="/authors">Authors</v-btn>
@@ -32,7 +31,7 @@ import Icon from "@/assets/icons/icons.png";
                 variant="flat"
                 href="/project/create"
             >
-                Create Project
+                Create Models
             </v-btn>
 
             <v-menu offset-y top right transition="scale-transition">
