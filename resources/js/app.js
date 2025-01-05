@@ -20,15 +20,35 @@ const vuetify = createVuetify({
     directives,
     theme: {
         defaultTheme: "dark",
-        colors: {
-            background: "#000000", // Black background
-            surface: "#121212", // Darker surface color
-            primary: "#6200ea", // Primary color (adjust as needed)
-            secondary: "#03dac6", // Secondary color (adjust as needed)
-            error: "#b00020", // Error color (adjust as needed)
-            info: "#2196f3", // Info color (adjust as needed)
-            success: "#4caf50", // Success color (adjust as needed)
-            warning: "#fb8c00", // Warning color (adjust as needed)
+        themes: {
+            dark: {
+                colors: {
+                    background: "#120212", // Deep blackish-pink
+                    surface: "#240024", // Darker pinkish surface
+                    primary: "#ff007f", // Vibrant neon pink
+                    secondary: "#00ffff", // Neon cyan for contrast
+                    error: "#ff3366", // Lighter pinkish red
+                    info: "#ff77ff", // Soft neon pink
+                    success: "#ffb3ff", // Muted light pink
+                    warning: "#ffa500", // Bright orange for pop
+                },
+            },
+        },
+    },
+    defaults: {
+        VCard: {
+            style: {
+                background: "rgba(36, 0, 36, 0.8)", // Semi-transparent surface
+                border: "1px solid #ff007f",
+                boxShadow: "0px 4px 20px 2px rgba(255, 0, 127, 0.6)",
+                color: "#ffffff",
+                marginBottom: "rem",
+            },
+        },
+        VTextField: {
+            style: {
+                color: "#ffffff",
+            },
         },
     },
 });
@@ -39,7 +59,7 @@ createInertiaApp({
         let page = pages[`./views/${name}.vue`];
 
         // Default to PublicLayout unless otherwise specified
-        page.default.layout = undefined;
+        page.default.layout = PublicLayout;
 
         if (
             name.startsWith("Admin/") ||
@@ -66,6 +86,9 @@ createInertiaApp({
             .use(vuetify)
             .mount(el);
     },
-    title: (title) => `${title} - Project Name`,
+    title: (title) => {
+        console.log(title);
+        return title ? `${title} - Voxel Editor CMS` : "Voxel Editor CMS";
+    },
     progress: true,
 });

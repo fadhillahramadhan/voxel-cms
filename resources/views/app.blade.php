@@ -5,10 +5,13 @@
     dir="ltr">
 
 <head>
-    @inertiaHead
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     @vite('resources/js/app.js')
     @vite('resources/assets/css/normalize.css')
+
+    @inertiaHead
+
 </head>
 
 <body>
