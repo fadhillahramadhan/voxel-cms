@@ -29,7 +29,7 @@ import Icon from "@/assets/icons/icons.png";
                 class="text-none text-subtitle-1"
                 color="primary"
                 variant="flat"
-                href="/project/create"
+                href="/modeling/create"
             >
                 Create Models
             </v-btn>
@@ -74,7 +74,7 @@ import Icon from "@/assets/icons/icons.png";
                     <v-list-item
                         v-if="$page.props.auth.user"
                         @click="menu = !menu"
-                        href="/project"
+                        href="/modeling/my"
                         prepend-icon="mdi-account"
                     >
                         <v-list-item-title>My Project</v-list-item-title>
@@ -83,7 +83,7 @@ import Icon from "@/assets/icons/icons.png";
                     <v-list-item
                         v-if="$page.props.auth.user"
                         @click="menu = !menu"
-                        href="/project/create"
+                        href="/modeling/create"
                         prepend-icon="mdi-plus"
                     >
                         <v-list-item-title>Create Project</v-list-item-title>
