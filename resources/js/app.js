@@ -87,8 +87,7 @@ createInertiaApp({
             .mount(el);
     },
     title: (title) => {
-        console.log(title);
-        return title ? `${title} - Voxel Editor CMS` : "Voxel Editor CMS";
+        return title ? `${title} - Voxelize` : "Voxelize";
     },
     progress: true,
 });
