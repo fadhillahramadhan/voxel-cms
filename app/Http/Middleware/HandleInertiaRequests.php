@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use Illuminate\Support\Facades\DB;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -42,7 +43,26 @@ class HandleInertiaRequests extends Middleware
                     ? $request->session()->get('errors')->getBag('default')->getMessages()
                     : (object) [];
             },
-            //
+            // user form session
+            'auth' => function () use ($request) {
+                $user = $request->session()->get('user');
+
+                if (!$user) {
+                    return [
+                        'user' => null,
+                    ];
+                }
+
+                $user = DB::table('users')
+                    ->where('id', $user->id)
+                    ->first();
+
+                // unset the password
+
+                return [
+                    'user' => $user,
+                ];
+            },
         ]);
     }
 }

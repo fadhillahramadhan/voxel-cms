@@ -1,5 +1,6 @@
 <script setup>
 import Icon from "@/assets/icons/icons.png";
+import axios from "axios";
 </script>
 <template>
     <v-container>
@@ -25,21 +26,24 @@ import Icon from "@/assets/icons/icons.png";
                     <v-card-text>
                         <v-form>
                             <v-text-field
-                                v-model="name"
+                                v-model="form.name"
+                                :error-messages="errors.name"
                                 label="Name"
                                 outlined
                                 dense
                                 required
                             ></v-text-field>
                             <v-text-field
-                                v-model="email"
+                                v-model="form.email"
+                                :error-messages="errors.email"
                                 label="Email"
                                 outlined
                                 dense
                                 required
                             ></v-text-field>
                             <v-text-field
-                                v-model="password"
+                                v-model="form.password"
+                                :error-messages="errors.password"
                                 label="Password"
                                 outlined
                                 dense
@@ -47,7 +51,8 @@ import Icon from "@/assets/icons/icons.png";
                                 type="password"
                             ></v-text-field>
                             <v-text-field
-                                v-model="confirmPassword"
+                                v-model="form.confirmPassword"
+                                :error-messages="errors.confirmPassword"
                                 label="Confirm Password"
                                 outlined
                                 dense
@@ -85,9 +90,47 @@ import { ref } from "vue";
 
 export default {
     data: () => ({
+        form: {
+            name: "",
+            email: "",
+            password: "",
+            confirmPassword: "",
+        },
+        errors : {
+            name: "",
+            email: "",
+            password: "",
+            confirmPassword: "",
+        }
       
     }),
     methods: {
+        async register() {
+            try {
+                await axios
+                    .post("/register", this.form)
+                    .then((response) => {
+                        this.$inertia.visit("/login");
+                    })
+            } catch (error) {
+                if(error && error.response && error.response.data && error.response.data.error === "validation") {
+                    this.errors = error.response.data.data;
+                } else {
+                    this.errorLogin = true;
+                    this.errors = {}
+                }
+
+                // Handle Error
+                if (error && error.response && error.response.data && error.response.data.message) {
+                    this.errorLogin = error.response.data.message;
+                }
+
+                setTimeout(() => {
+                    this.errorLogin = false;
+                    this.errors = {};
+                }, 5000);
+            }
+        },
        
     },
 };

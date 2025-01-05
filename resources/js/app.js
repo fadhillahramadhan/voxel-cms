@@ -45,11 +45,6 @@ const vuetify = createVuetify({
                 marginBottom: "rem",
             },
         },
-        VTextField: {
-            style: {
-                color: "#ffffff",
-            },
-        },
     },
 });
 

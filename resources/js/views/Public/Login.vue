@@ -1,5 +1,7 @@
 <script setup>
 import Icon from "@/assets/icons/icons.png";
+import axios from "axios";
+
 </script>
 <template>
     <v-container>
@@ -24,14 +26,16 @@ import Icon from "@/assets/icons/icons.png";
                     <v-card-text>
                         <v-form>
                             <v-text-field
-                                v-model="email"
+                                v-model="form.email"
+                                :error-messages="errors.email"
                                 label="Email"
                                 outlined
                                 dense
                                 required
                             ></v-text-field>
                             <v-text-field
-                                v-model="password"
+                                v-model="form.password"
+                                :error-messages="errors.password"
                                 label="Password"
                                 outlined
                                 dense
@@ -74,12 +78,46 @@ import { ref } from "vue";
 
 export default {
     data: () => ({
-        email: "",
-        password: "",
+       form: {
+            email: "",
+            password: "",
+        },
+        errors: {
+            email: [],
+            password: [],
+        },
         loading: false,
     }),
     methods: {
-      
+        async login() {
+            try {
+                await axios
+                    .post("/login", this.form)
+                    .then((response) => {
+                        this.$inertia.visit("/");
+                    }).error((error) => {
+                        console.log(error);
+                    });
+            } catch (error) {
+                // if (error.response.data.error === "validation") {
+                if(error && error.response && error.response.data && error.response.data.error === "validation") {
+                    this.errors = error.response.data.data;
+                } else {
+                    this.errorLogin = true;
+                    this.errors = {}
+                }
+
+                // Handle Error
+                if (error && error.response && error.response.data && error.response.data.message) {
+                    this.errorLogin = error.response.data.message;
+                }
+
+                setTimeout(() => {
+                    this.errorLogin = false;
+                    this.errors = {};
+                }, 5000);
+            }
+        },
     },
 };
 </script>
