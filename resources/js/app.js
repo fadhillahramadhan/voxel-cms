@@ -2,10 +2,11 @@ import { createApp, h } from "vue";
 import { createInertiaApp } from "@inertiajs/vue3";
 
 import { createVuetify } from "vuetify";
-import "@mdi/font/css/materialdesignicons.css";
-import "vuetify/styles";
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
+
+import "@mdi/font/css/materialdesignicons.css";
+import "vuetify/styles";
 
 import AdminLayout from "@/shared/template/Admin/Layout.vue";
 import PublicLayout from "@/shared/template/Public/Layout.vue";
@@ -18,7 +19,17 @@ const vuetify = createVuetify({
     components,
     directives,
     theme: {
-        defaultTheme: "light",
+        defaultTheme: "dark",
+        colors: {
+            background: "#000000", // Black background
+            surface: "#121212", // Darker surface color
+            primary: "#6200ea", // Primary color (adjust as needed)
+            secondary: "#03dac6", // Secondary color (adjust as needed)
+            error: "#b00020", // Error color (adjust as needed)
+            info: "#2196f3", // Info color (adjust as needed)
+            success: "#4caf50", // Success color (adjust as needed)
+            warning: "#fb8c00", // Warning color (adjust as needed)
+        },
     },
 });
 

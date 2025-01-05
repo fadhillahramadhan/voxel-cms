@@ -5,14 +5,14 @@
     dir="ltr">
 
 <head>
-    @vite('resources/js/app.js')
     @inertiaHead
+
+    @vite('resources/js/app.js')
+    @vite('resources/assets/css/normalize.css')
 </head>
 
 <body>
-    <div class="apps-container">
-        @inertia
-    </div>
+    @inertia
 </body>
 
 </html>

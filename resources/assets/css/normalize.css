@@ -8,11 +8,20 @@
  * 2. Prevent adjustments of font size after orientation changes in iOS.
  */
 
+/* https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap */
+
+/* link font */
+/* @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+change to inter /* */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;700;900&display=swap');
+
+
 html {
     line-height: 1.15;
     /* 1 */
     -webkit-text-size-adjust: 100%;
     /* 2 */
+    font-family: 'Inter', sans-serif !important;
 }
 
 /* Sections
