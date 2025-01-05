@@ -24,6 +24,17 @@ import Icon from "@/assets/icons/icons.png";
             <!-- Right Actions -->
             <v-spacer></v-spacer>
 
+            <!-- create project -->
+            <v-btn
+                v-if="$page.props.auth.user"
+                class="text-none text-subtitle-1"
+                color="primary"
+                variant="flat"
+                href="/project/create"
+            >
+                Create Project
+            </v-btn>
+
             <v-menu offset-y top right transition="scale-transition">
                 <template v-slot:activator="{ props }">
                     <v-list
