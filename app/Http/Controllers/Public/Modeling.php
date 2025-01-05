@@ -68,16 +68,12 @@ class Modeling extends Controller
 
             // create json file
             $json_file = fopen($directory . '/' . $unique_code . '.json', 'w');
-            $engine_url =  env('APP_ENGINE_URL') . '?code=' . $unique_code . '&pull_url=' . 'https://voxelize.b-cdn.net/' . $unique_code . '.json';
-
-            print_r($engine_url);
-            die;
 
             return response()->json([
                 'message' => 'Custom model saved successfully',
                 'error' => '',
                 'data' => [
-                    'engine_url' => $engine_url,
+                    'engine_url' => env('APP_ENGINE_URL') . '?code=' . $unique_code . '&ref=' . env('APP_URL'),
                 ]
             ], 200);
         } catch (\Throwable $th) {
@@ -92,14 +88,13 @@ class Modeling extends Controller
     // update json custom model only need unique_code and json data
     public function updateCustomModel(Request $request)
     {
-
         try {
             $validator = Validator::make($request->all(), [
                 'unique_code' => 'required',
                 'json' => 'required',
             ], [
                 'unique_code.required' => "Please enter your unique code.",
-                'json.required' => 'Please enter your JSON data.',
+                'json.required' => 'Please enter your json data.',
             ]);
 
             if ($validator->fails()) {
@@ -113,9 +108,16 @@ class Modeling extends Controller
             $unique_code = $request->input('unique_code');
             $json = $request->input('json');
 
+            // Ensure the directory exists
+            $directory = public_path('custom_models');
+            if (!is_dir($directory)) {
+                mkdir($directory, 0777, true);
+            }
+
             // Encode the JSON data to a string
             $json_data = json_encode($json, JSON_PRETTY_PRINT);
 
+            // Check if json_encode was successful
             if ($json_data === false) {
                 return response()->json([
                     'message' => 'Failed to encode JSON data.',
@@ -124,57 +126,82 @@ class Modeling extends Controller
                 ], 400);
             }
 
-            $baseUrl = 'https://storage.bunnycdn.com/voxels'; // BunnyCDN Base URL
-            $accessKey = '01f388be-b5ae-41a0-86875184e1d9-bf2a-415d';
-            $filePath = $unique_code . '.json'; // File path on BunnyCDN
+            // create json file
+            $json_file = fopen($directory . '/' . $unique_code . '.json', 'w');
+            fwrite($json_file, $json_data);
+            fclose($json_file);
 
-            // DELETE the existing file
-            $deleteCurl = curl_init();
-            curl_setopt_array($deleteCurl, [
-                CURLOPT_URL => $baseUrl . '/' . $filePath,
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_CUSTOMREQUEST => 'DELETE',
-                CURLOPT_HTTPHEADER => [
-                    'AccessKey: ' . $accessKey,
-                ],
+            return response()->json([
+                'message' => 'Custom model updated successfully',
+                'error' => '',
+                'data' => []
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => $th->getMessage(),
+                'error' => 'error',
+                'data' => []
+            ], 400);
+        }
+    }
+
+    // get json
+    public function getCustomModel(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'unique_code' => 'required',
+            ], [
+                'unique_code.required' => "Please enter your unique code.",
             ]);
-            $deleteResponse = curl_exec($deleteCurl);
-            $deleteHttpCode = curl_getinfo($deleteCurl, CURLINFO_HTTP_CODE);
-            curl_close($deleteCurl);
 
-            // CREATE the new file using octet-stream
-
-
-            $createCurl = curl_init();
-            curl_setopt_array($createCurl, [
-                CURLOPT_URL => $baseUrl . '/' . $filePath,
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_CUSTOMREQUEST => 'PUT',
-                CURLOPT_POSTFIELDS => $json_data,  // The raw JSON data
-                CURLOPT_HTTPHEADER => [
-                    'Content-Type: application/octet-stream',  // Set content-type to octet-stream
-                    'Accept: application/json',
-                    'AccessKey: ' . $accessKey,
-                ],
-            ]);
-            $createResponse = curl_exec($createCurl);
-            $createHttpCode = curl_getinfo($createCurl, CURLINFO_HTTP_CODE);
-            curl_close($createCurl);
-
-            if ($createHttpCode >= 200 && $createHttpCode < 300) {
+            if ($validator->fails()) {
                 return response()->json([
-                    'message' => 'Custom model updated successfully',
-                    'error' => '',
+                    'message' => 'Please check your input again.',
+                    'error' => 'validation',
+                    'data' => $validator->errors()
+                ], 400);
+            }
+
+            $unique_code = $request->input('unique_code');
+
+            // Ensure the directory exists
+            $directory = public_path('custom_models');
+            if (!is_dir($directory)) {
+                mkdir($directory, 0777, true);
+            }
+
+            // Check if the file exists
+            if (!file_exists($directory . '/' . $unique_code . '.json')) {
+                return response()->json([
+                    'message' => 'File not found.',
+                    'error' => 'error',
                     'data' => []
-                ], 200);
+                ], 400);
+            }
+
+            // Read the file
+            $json_file = fopen($directory . '/' . $unique_code . '.json', 'r');
+            $json_data = fread($json_file, filesize($directory . '/' . $unique_code . '.json'));
+            fclose($json_file);
+
+            // Decode the JSON data
+            $json = json_decode($json_data, true);
+
+            // Check if json_decode was successful
+            if ($json === null) {
+                return response()->json([
+                    'message' => 'Failed to decode JSON data.',
+                    'error' => 'error',
+                    'data' => []
+                ], 400);
             }
 
             return response()->json([
-                'message' => 'Failed to upload JSON to BunnyCDN.',
-                'error' => 'error',
-                'url' => $baseUrl . '/' . $filePath,
-                'data' => json_decode($createResponse, true),
-            ], 400);
+                'message' => 'Custom model retrieved successfully',
+                'error' => '',
+                'data' => $json
+            ], 200);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => $th->getMessage(),
