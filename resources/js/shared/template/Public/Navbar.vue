@@ -11,7 +11,7 @@ import Icon from "@/assets/icons/icons.png";
             <!-- image -->
             <v-img
                 :src="Icon"
-                max-width="200"
+                max-width="200px"
                 style="margin-top: -10px; margin-right: -30px"
             ></v-img>
             <!-- Navigation Links only if md -up -->
