@@ -70,10 +70,6 @@ export default {
                     .post("/modeling/save", this.form)
                     .then((response) => {
                         let data = response.data.data;
-                        //redirect to the model page
-                        console.log(data.engine_url);
-                        // window.location.href = `${data.engine_url}`;
-                        // redirect to the model page its different web
                         window.location.href = data.engine_url;
                     });
             } catch (error) {
