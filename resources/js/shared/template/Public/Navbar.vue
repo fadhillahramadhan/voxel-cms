@@ -11,7 +11,7 @@ import Icon from "@/assets/icons/icons.png";
             <!-- image -->
             <v-img
                 :src="Icon"
-                max-width="250px"
+                max-width="200"
                 style="margin-top: -10px; margin-right: -30px"
             ></v-img>
             <!-- Navigation Links only if md -up -->
@@ -25,7 +25,7 @@ import Icon from "@/assets/icons/icons.png";
 
             <!-- create project -->
             <v-btn
-                v-if="$page.props.auth.user"
+                v-if="$page.props.auth.user && $vuetify.display.mdAndUp"
                 class="text-none text-subtitle-1"
                 color="primary"
                 variant="flat"
@@ -77,7 +77,16 @@ import Icon from "@/assets/icons/icons.png";
                         href="/project"
                         prepend-icon="mdi-account"
                     >
-                        <v-list-item-title>Project</v-list-item-title>
+                        <v-list-item-title>My Project</v-list-item-title>
+                    </v-list-item>
+                    <!-- create project -->
+                    <v-list-item
+                        v-if="$page.props.auth.user"
+                        @click="menu = !menu"
+                        href="/project/create"
+                        prepend-icon="mdi-plus"
+                    >
+                        <v-list-item-title>Create Project</v-list-item-title>
                     </v-list-item>
                 </v-list>
             </v-menu>
