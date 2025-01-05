@@ -123,4 +123,8 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'BUNNY_BASE_URL' => env('BUNNY_BASE_URL'),
+    'BUNNY_ACCESS_KEY' => env('BUNNY_ACCESS_KEY'),
+
+
 ];

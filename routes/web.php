@@ -21,4 +21,7 @@ Route::middleware(HandleInertiaRequests::class)->group(function () {
     // Modeling
     Route::get('/modeling/create', [Modeling::class, 'show'])->name('modeling');
     Route::post('/modeling/save', [Modeling::class, 'saveCustomModel'])->withoutMiddleware('csrf');
+    // update json
 });
+
+Route::post('/modeling/update', [Modeling::class, 'updateCustomModel'])->withoutMiddleware('csrf');
