@@ -1,23 +1,34 @@
 import { createApp, h } from "vue";
 import { createInertiaApp } from "@inertiajs/vue3";
 
-import PerfectScrollbar from "vue3-perfect-scrollbar";
-import VueApexCharts from "vue3-apexcharts";
+import { createVuetify } from "vuetify";
+import "@mdi/font/css/materialdesignicons.css";
+import "vuetify/styles";
+import * as components from "vuetify/components";
+import * as directives from "vuetify/directives";
 
-// import "@/assets/scss/style.scss";
-
-import Layout from "@/shared/template/Layout.vue";
+import AdminLayout from "@/shared/template/Admin/Layout.vue";
+import PublicLayout from "@/shared/template/Public/Layout.vue";
 
 import { createPinia } from "pinia";
 
 const pinia = createPinia();
+
+const vuetify = createVuetify({
+    components,
+    directives,
+    theme: {
+        defaultTheme: "light",
+    },
+});
 
 createInertiaApp({
     resolve: (name) => {
         const pages = import.meta.glob("./views/**/*.vue", { eager: true });
         let page = pages[`./views/${name}.vue`];
 
-        page.default.layout = page.default.layout || Layout;
+        // Default to PublicLayout unless otherwise specified
+        page.default.layout = undefined;
 
         if (
             name.startsWith("Admin/") ||
@@ -29,9 +40,9 @@ createInertiaApp({
                 name.startsWith("VO/Login") ||
                 name.startsWith("Example/Login")
             ) {
-                page.default.layout = undefined;
+                page.default.layout = undefined; // No layout for login pages
             } else {
-                page.default.layout = Layout;
+                page.default.layout = AdminLayout;
             }
         }
 
@@ -40,10 +51,8 @@ createInertiaApp({
     setup({ el, App, props, plugin }) {
         createApp({ render: () => h(App, props) })
             .use(plugin)
-            // .use(vuetify)
             .use(pinia)
-            .use(PerfectScrollbar)
-            .use(VueApexCharts)
+            .use(vuetify)
             .mount(el);
     },
     title: (title) => `${title} - Project Name`,

@@ -4,28 +4,25 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Example\Template;
 
-use App\Http\Controllers\VO\Login;
-use App\Http\Controllers\VO\Dashboard;
+
 use App\Http\Middleware\EnsureMemberValid;
 use App\Http\Middleware\EnsureAdminValid;
 
 use App\Http\Controllers\Admin\Login as AdminLogin;
 use App\Http\Controllers\Admin\Dashboard as AdminDashboard;
+use App\Http\Controllers\Public\Home;
 use App\Http\Controllers\VO\Registration;
 // handle inertia requests\
 use App\Http\Middleware\HandleInertiaRequests;
 use GuzzleHttp\Psr7\Request;
+
 
 // Vo Routes
 
 // middleware for inertia requests
 
 // FORWARD / INTO ADMIN
-Route::get('/', function () {
-    // return to welcome page
-    return view('welcome');
-});
-
+Route::get('/', [Home::class, 'show'])->name('home');
 // Admin Routes
 Route::get('/admin/login', [AdminLogin::class, 'show_login'])->name('login');
 Route::post('/admin/auth/login', [AdminLogin::class, 'login'])->withoutMiddleware('csrf');

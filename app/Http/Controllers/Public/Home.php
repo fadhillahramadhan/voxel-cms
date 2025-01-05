@@ -1,19 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\VO;
+namespace App\Http\Controllers\Public;
+
 
 use App\Http\Controllers\Controller;
 use GuzzleHttp\Psr7\Request;
 use Inertia\Inertia;
 
 
-class Dashboard extends Controller
+class Home extends Controller
 {
 
     public function show()
     {
-
-
-        return Inertia::render('VO/Home');
+        return Inertia::render('Public/Home');
     }
 }
