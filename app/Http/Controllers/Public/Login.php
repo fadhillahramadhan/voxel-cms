@@ -82,4 +82,10 @@ class Login extends Controller
             ], 400);
         }
     }
+    // logout
+    public function logout(Request $request)
+    {
+        $request->session()->forget('user');
+        return redirect()->route('home');
+    }
 }
