@@ -1,4 +1,8 @@
 <template>
+    <Head>
+        <title>About</title>
+        <meta name="description" content="My App" />
+    </Head>
     <v-container>
         <v-row>
             <v-col cols="12">

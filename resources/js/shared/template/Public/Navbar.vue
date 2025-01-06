@@ -1,16 +1,15 @@
 <script setup>
-import Icon from "@/assets/icons/icons.png";
+import FreeIcon from "@/assets/icons/freeicon.png";
 </script>
 <template>
     <v-app-bar app dense>
         <v-container class="d-flex align-center">
             <!-- Logo -->
-            <v-img
-                :src="Icon"
-                :width="$vuetify.display.smAndDown ? '50%' : '70px'"
-                class="custom-image"
-                style="margin-top: -20px; margin-right: -30px"
-            ></v-img>
+            <img :src="FreeIcon" width="100" height="70" alt="Voxel Editor" />
+            <!-- title -->
+            <v-toolbar-title class="text-h6 font-weight-bold">
+                Voxelize
+            </v-toolbar-title>
 
             <!-- Navigation Links only if md -up -->
             <v-btn-group v-if="$vuetify.display.mdAndUp">
@@ -45,6 +44,7 @@ import Icon from "@/assets/icons/icons.png";
                         item-props
                         v-if="$page.props.auth.user"
                         v-bind="props"
+                        max-width="200"
                     >
                         <v-list-item
                             v-if="$page.props.auth.user"

@@ -5,7 +5,7 @@ import axios from "axios";
 
 <template>
     <Head>
-        <title>Home</title>
+        <title>All Models</title>
         <meta name="description" content="My App" />
     </Head>
     <v-row class="py-8">

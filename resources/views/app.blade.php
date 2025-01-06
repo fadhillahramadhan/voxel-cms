@@ -5,6 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title inertia>{{ config('app.name', 'Laravel') }}</title>
+    <!-- E:\Project\Javascript\Voxelize\VoxelEditorCMS\public\icons.png -->
+    <link rel="icon" href="{{ asset('icons.png') }}" type="image/png">
     @vite('resources/js/app.js')
     @vite('resources/assets/css/normalize.css')
     @inertiaHead
