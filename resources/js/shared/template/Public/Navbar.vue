@@ -7,12 +7,60 @@ import FreeIcon from "@/assets/icons/freeicon.png";
             <!-- Logo -->
             <img :src="FreeIcon" width="100" height="70" alt="Voxel Editor" />
             <!-- title -->
-            <v-toolbar-title
-                class="text-h6 font-weight-bold"
-                v-if="$vuetify.display.mdAndUp"
-            >
+            <v-toolbar-title class="text-h6 font-weight-bold">
                 Voxelize
             </v-toolbar-title>
+
+            <!-- gear button with dropdown -->
+            <v-menu
+                offset-y
+                top
+                right
+                transition="scale-transition"
+                v-if="$vuetify.display.smAndDown"
+            >
+                <template v-slot:activator="{ props }">
+                    <v-btn icon v-bind="props">
+                        <v-icon>mdi-cog</v-icon>
+                    </v-btn>
+                </template>
+                <v-list>
+                    <!-- if auth -->
+                    <v-list-item
+                        v-if="$page.props.auth.user"
+                        href="/modeling/my"
+                        prepend-icon="mdi-cube"
+                    >
+                        <v-list-item-title>My Projects</v-list-item-title>
+                    </v-list-item>
+
+                    <!-- if auth -->
+                    <v-list-item
+                        v-if="$page.props.auth.user"
+                        href="/modeling/create"
+                        prepend-icon="mdi-plus"
+                    >
+                        <v-list-item-title>Create Model</v-list-item-title>
+                    </v-list-item>
+                    <!-- logout -->
+                    <v-list-item
+                        v-if="$page.props.auth.user"
+                        href="/logout"
+                        prepend-icon="mdi-logout"
+                    >
+                        <v-list-item-title>Logout</v-list-item-title>
+                    </v-list-item>
+
+                    <!-- if not auth -->
+                    <v-list-item
+                        v-if="!$page.props.auth.user"
+                        href="/login"
+                        prepend-icon="mdi-login"
+                    >
+                        <v-list-item-title>Login</v-list-item-title>
+                    </v-list-item>
+                </v-list>
+            </v-menu>
 
             <!-- Navigation Links only if md -up -->
             <v-btn-group v-if="$vuetify.display.mdAndUp">
@@ -40,7 +88,13 @@ import FreeIcon from "@/assets/icons/freeicon.png";
                 Create Models
             </v-btn>
 
-            <v-menu offset-y top right transition="scale-transition">
+            <v-menu
+                offset-y
+                top
+                right
+                transition="scale-transition"
+                v-if="$vuetify.display.mdAndUp"
+            >
                 <template v-slot:activator="{ props }">
                     <v-list
                         lines="three"
@@ -101,7 +155,7 @@ import FreeIcon from "@/assets/icons/freeicon.png";
             <!-- v-menu -->
 
             <v-btn
-                v-if="!$page.props.auth.user"
+                v-if="!$page.props.auth.user && $vuetify.display.mdAndUp"
                 class="text-none text-subtitle-1"
                 color="primary"
                 variant="flat"
