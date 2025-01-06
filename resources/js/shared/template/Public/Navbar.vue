@@ -32,6 +32,15 @@ import { ref } from "vue";
             </template>
 
             <v-list>
+                <!-- Home -->
+                <v-list-item href="/" prepend-icon="mdi-home">
+                    <v-list-item-title>Home</v-list-item-title>
+                </v-list-item>
+                <!-- about -->
+                <v-list-item href="/about" prepend-icon="mdi-information">
+                    <v-list-item-title>About</v-list-item-title>
+                </v-list-item>
+
                 <v-list-item
                     v-if="$page.props.auth.user"
                     href="/modeling/my"
