@@ -64,7 +64,7 @@ import axios from "axios";
                 min-height="200"
                 rounded="lg"
                 :image="model.image"
-                @click="() => (window.location.href = `/modeling/${model.id}`)"
+                :href="`/modeling/detail/${model.unique_code}`"
             >
                 <v-card-title class="font-weight-bold text-right" rounded="sm">
                     <v-chip color="black" class="text-none" dark>

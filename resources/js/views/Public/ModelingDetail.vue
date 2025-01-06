@@ -107,17 +107,6 @@
                 >
                     View Model
                 </v-btn>
-
-                <!-- <v-btn
-                    color="error"
-                    @click="onDelete"
-                    v-if="
-                        $page.props.auth.user &&
-                        $page.props.auth.user.id == model.user_id
-                    "
-                >
-                    Delete Model
-                </v-btn> -->
             </v-col>
         </v-row>
     </v-container>
