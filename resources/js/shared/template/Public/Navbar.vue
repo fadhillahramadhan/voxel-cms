@@ -7,7 +7,10 @@ import FreeIcon from "@/assets/icons/freeicon.png";
             <!-- Logo -->
             <img :src="FreeIcon" width="100" height="70" alt="Voxel Editor" />
             <!-- title -->
-            <v-toolbar-title class="text-h6 font-weight-bold">
+            <v-toolbar-title
+                class="text-h6 font-weight-bold"
+                v-if="$vuetify.display.mdAndUp"
+            >
                 Voxelize
             </v-toolbar-title>
 
