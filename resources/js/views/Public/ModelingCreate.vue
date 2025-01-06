@@ -10,10 +10,16 @@ import axios from "axios";
                 <v-card rounded="lg">
                     <!--icon, Log in to your account, welcome back,form, rememberme, button  -->
                     <v-card-title class="text-center mb-2">
+                        <img
+                            :src="Icon"
+                            width="300"
+                            height="300"
+                            style="margin-top: -100px; margin-bottom: -100px"
+                        ></img>
                         <h2 class="text-h5 font-weight-bold">
                             Create a new model
                         </h2>
-                        <p class="text-subtitle-2">Please enter your details</p>
+                        <p class="text-subtitle-2">Welcome back, please enter your details</p>
                     </v-card-title>
                     <!-- form -->
                     <v-card-text>
@@ -36,6 +42,31 @@ import axios from "axios";
                                 dense
                                 required
                             ></v-text-field>
+
+                            <!-- descriptions -->
+                            <v-textarea
+                                v-model="form.description"
+                                :error-messages="errors.description"
+                                label="Please enter the description of the model"
+                                outlined
+                                dense
+                                required
+                            ></v-textarea>
+
+                            <!-- is published or not option -->
+                            <v-select
+                                v-model="form.is_published"
+                                :error-messages="errors.is_published"
+                                label="Is this model published for public use?"
+                                outlined
+                                dense
+                                required
+                                :items="is_published_options"
+                                item-title="text"
+                                item-value="value"
+                            >
+                            </v-select>
+
                             <!-- submit -->
                             <v-btn color="primary" dark block type="submit">
                                 Create Model
@@ -62,6 +93,10 @@ export default {
             name: "",
             type: "",
         },
+        is_published_options: [
+            { text: "Yes", value: 1 },
+            { text: "No", value: 0 },
+        ],
     }),
     methods: {
         async register() {

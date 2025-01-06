@@ -1,24 +1,28 @@
 <script setup>
 import Icon from "@/assets/icons/icons.png";
-
-// page
 </script>
-
 <template>
     <v-app-bar app dense>
         <v-container class="d-flex align-center">
             <!-- Logo -->
-            <!-- image -->
             <v-img
                 :src="Icon"
-                max-width="200px"
-                style="margin-top: -10px; margin-right: -30px"
+                :width="$vuetify.display.smAndDown ? '50%' : '70px'"
+                class="custom-image"
+                style="margin-top: -20px; margin-right: -30px"
             ></v-img>
+
             <!-- Navigation Links only if md -up -->
             <v-btn-group v-if="$vuetify.display.mdAndUp">
                 <v-btn text href="/">Home</v-btn>
                 <!-- authors -->
-                <v-btn text href="/authors">Authors</v-btn>
+                <!-- <v-btn text href="/authors">Authors</v-btn> -->
+                <!-- about -->
+                <v-btn text href="/about">About</v-btn>
+                <!-- my Project -->
+                <v-btn text href="/modeling/my" v-if="$page.props.auth.user">
+                    My Projects
+                </v-btn>
             </v-btn-group>
             <!-- Right Actions -->
             <v-spacer></v-spacer>
@@ -70,23 +74,25 @@ import Icon from "@/assets/icons/icons.png";
                     >
                         <v-list-item-title>Logout</v-list-item-title>
                     </v-list-item>
-                    <!-- Project -->
+
+                    <!-- create project -->
+                    <!-- my project alos -->
                     <v-list-item
                         v-if="$page.props.auth.user"
                         @click="menu = !menu"
                         href="/modeling/my"
-                        prepend-icon="mdi-account"
+                        prepend-icon="mdi-cube"
                     >
-                        <v-list-item-title>My Project</v-list-item-title>
+                        <v-list-item-title>My Projects</v-list-item-title>
                     </v-list-item>
-                    <!-- create project -->
+
                     <v-list-item
                         v-if="$page.props.auth.user"
                         @click="menu = !menu"
                         href="/modeling/create"
                         prepend-icon="mdi-plus"
                     >
-                        <v-list-item-title>Create Project</v-list-item-title>
+                        <v-list-item-title>Create Model</v-list-item-title>
                     </v-list-item>
                 </v-list>
             </v-menu>
@@ -106,17 +112,15 @@ import Icon from "@/assets/icons/icons.png";
 </template>
 
 <script>
-// ddata
+import { ref } from "vue";
 
 export default {
     setup() {
-        // data
         const menu = ref(false);
 
         return {
             menu,
         };
     },
-    data: () => ({}),
 };
 </script>

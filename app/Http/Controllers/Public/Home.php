@@ -11,9 +11,9 @@ use Inertia\Inertia;
 
 class Home extends Controller
 {
-
+    // about
     public function show()
     {
-        return Inertia::render('Public/Home');
+        return Inertia::render('Public/About');
     }
 }
