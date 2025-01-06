@@ -83,7 +83,10 @@
                 <v-btn
                     color="primary"
                     class="mr-3"
-                    v-if="$page.props.auth.user.id == model.user_id"
+                    v-if="
+                        $page.props.auth.user &&
+                        $page.props.auth.user.id == model.user_id
+                    "
                     :href="engine_url"
                     target="_blank"
                 >
@@ -96,6 +99,11 @@
                     class="mr-3"
                     :href="engine_url"
                     target="_blank"
+                    v-if="
+                        !$page.props.auth.user ||
+                        ($page.props.auth.user &&
+                            $page.props.auth.user.id != model.user_id)
+                    "
                 >
                     View Model
                 </v-btn>
@@ -103,7 +111,10 @@
                 <v-btn
                     color="error"
                     @click="onDelete"
-                    v-if="$page.props.auth.user.id == model.user_id"
+                    v-if="
+                        $page.props.auth.user &&
+                        $page.props.auth.user.id == model.user_id
+                    "
                 >
                     Delete Model
                 </v-btn>
