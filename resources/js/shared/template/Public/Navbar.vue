@@ -47,7 +47,6 @@ import FreeIcon from "@/assets/icons/freeicon.png";
                         item-props
                         v-if="$page.props.auth.user"
                         v-bind="props"
-                        max-width="200"
                     >
                         <v-list-item
                             v-if="$page.props.auth.user"
