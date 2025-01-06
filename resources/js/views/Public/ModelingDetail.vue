@@ -94,7 +94,6 @@
                 <v-btn
                     color="primary"
                     class="mr-3"
-                    v-if="$page.props.auth.user.id !== model.user_id"
                     :href="engine_url"
                     target="_blank"
                 >
