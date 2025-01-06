@@ -3,7 +3,7 @@ import FreeIcon from "@/assets/icons/freeicon.png";
 </script>
 <template>
     <v-app-bar app dense>
-        <v-container class="d-flex align-center">
+        <v-container class="d-flex align-center justify-space-between">
             <!-- Logo -->
             <img :src="FreeIcon" width="100" height="70" alt="Voxel Editor" />
             <!-- title -->
