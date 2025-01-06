@@ -1,141 +1,128 @@
 <script setup>
 import FreeIcon from "@/assets/icons/freeicon.png";
+import { ref } from "vue";
 </script>
+
 <template>
     <v-app-bar app dense>
-        <v-container class="d-flex align-center justify-space-between">
+        <!-- flex -->
+        <img
+            :src="FreeIcon"
+            width="100"
+            height="70"
+            alt="Voxel Editor"
+            v-if="$vuetify.display.smAndDown"
+        />
+        <v-toolbar-title
+            class="text-h6 font-weight-bold"
+            v-if="$vuetify.display.smAndDown"
+            >Voxelize</v-toolbar-title
+        >
+
+        <!-- Gear button with dropdown -->
+        <v-menu
+            offset-y
+            transition="scale-transition"
+            v-if="$vuetify.display.smAndDown"
+        >
+            <template v-slot:activator="{ props }">
+                <v-btn icon v-bind="props">
+                    <v-icon>mdi-menu</v-icon>
+                </v-btn>
+            </template>
+
+            <v-list>
+                <v-list-item
+                    v-if="$page.props.auth.user"
+                    href="/modeling/my"
+                    prepend-icon="mdi-cube"
+                >
+                    <v-list-item-title>My Projects</v-list-item-title>
+                </v-list-item>
+
+                <v-list-item
+                    v-if="$page.props.auth.user"
+                    href="/modeling/create"
+                    prepend-icon="mdi-plus"
+                >
+                    <v-list-item-title>Create Model</v-list-item-title>
+                </v-list-item>
+
+                <v-list-item
+                    v-if="$page.props.auth.user"
+                    href="/logout"
+                    prepend-icon="mdi-logout"
+                >
+                    <v-list-item-title>Logout</v-list-item-title>
+                </v-list-item>
+
+                <v-list-item
+                    v-if="!$page.props.auth.user"
+                    href="/login"
+                    prepend-icon="mdi-login"
+                >
+                    <v-list-item-title>Login</v-list-item-title>
+                </v-list-item>
+            </v-list>
+        </v-menu>
+
+        <v-container
+            class="d-flex align-center justify-space-between"
+            v-if="$vuetify.display.mdAndUp"
+        >
             <!-- Logo -->
             <img :src="FreeIcon" width="100" height="70" alt="Voxel Editor" />
-            <!-- title -->
+
+            <!-- Title -->
             <v-toolbar-title class="text-h6 font-weight-bold">
                 Voxelize
             </v-toolbar-title>
 
-            <!-- gear button with dropdown -->
-            <v-menu
-                offset-y
-                top
-                right
-                transition="scale-transition"
-                v-if="$vuetify.display.smAndDown"
-            >
-                <template v-slot:activator="{ props }">
-                    <v-btn icon v-bind="props">
-                        <v-icon>mdi-cog</v-icon>
-                    </v-btn>
-                </template>
-                <v-list>
-                    <!-- if auth -->
-                    <v-list-item
-                        v-if="$page.props.auth.user"
-                        href="/modeling/my"
-                        prepend-icon="mdi-cube"
-                    >
-                        <v-list-item-title>My Projects</v-list-item-title>
-                    </v-list-item>
-
-                    <!-- if auth -->
-                    <v-list-item
-                        v-if="$page.props.auth.user"
-                        href="/modeling/create"
-                        prepend-icon="mdi-plus"
-                    >
-                        <v-list-item-title>Create Model</v-list-item-title>
-                    </v-list-item>
-                    <!-- logout -->
-                    <v-list-item
-                        v-if="$page.props.auth.user"
-                        href="/logout"
-                        prepend-icon="mdi-logout"
-                    >
-                        <v-list-item-title>Logout</v-list-item-title>
-                    </v-list-item>
-
-                    <!-- if not auth -->
-                    <v-list-item
-                        v-if="!$page.props.auth.user"
-                        href="/login"
-                        prepend-icon="mdi-login"
-                    >
-                        <v-list-item-title>Login</v-list-item-title>
-                    </v-list-item>
-                </v-list>
-            </v-menu>
-
-            <!-- Navigation Links only if md -up -->
+            <!-- Navigation Links for larger screens -->
             <v-btn-group v-if="$vuetify.display.mdAndUp">
                 <v-btn text href="/">Home</v-btn>
-                <!-- authors -->
-                <!-- <v-btn text href="/authors">Authors</v-btn> -->
-                <!-- about -->
                 <v-btn text href="/about">About</v-btn>
-                <!-- my Project -->
                 <v-btn text href="/modeling/my" v-if="$page.props.auth.user">
                     My Projects
                 </v-btn>
             </v-btn-group>
-            <!-- Right Actions -->
+
             <v-spacer></v-spacer>
 
-            <!-- create project -->
-            <v-btn
-                v-if="$page.props.auth.user && $vuetify.display.mdAndUp"
-                class="text-none text-subtitle-1"
-                color="primary"
-                variant="flat"
-                href="/modeling/create"
-            >
-                Create Models
-            </v-btn>
-
+            <!-- Avatar and actions for larger screens -->
             <v-menu
                 offset-y
-                top
-                right
                 transition="scale-transition"
                 v-if="$vuetify.display.mdAndUp"
             >
                 <template v-slot:activator="{ props }">
-                    <v-list
-                        lines="three"
-                        item-props
+                    <!-- <v-avatar
                         v-if="$page.props.auth.user"
+                        :size="40"
+                        class="ml-2"
+                        :image="$page.props.auth.user.image"
                         v-bind="props"
-                    >
-                        <v-list-item
+                    ></v-avatar> -->
+                    <v-btn icon v-bind="props">
+                        <v-avatar
                             v-if="$page.props.auth.user"
-                            :prepend-avatar="$page.props.auth.user.image"
-                            @click="menu = !menu"
-                            class="text-none text-subtitle-1"
-                        >
-                            <v-list-item-content>
-                                <v-list-item-title>
-                                    {{ $page.props.auth.user.name }}
-                                </v-list-item-title>
-                                <!-- subtitle -->
-                                <v-list-item-subtitle>
-                                    {{ $page.props.auth.user.email }}
-                                </v-list-item-subtitle>
-                            </v-list-item-content>
-                        </v-list-item>
-                    </v-list>
+                            :size="40"
+                            :image="$page.props.auth.user.image"
+                        ></v-avatar>
+                    </v-btn>
                 </template>
-                <!-- v-list -->
+
                 <v-list>
                     <v-list-item
                         v-if="$page.props.auth.user"
-                        @click="menu = !menu"
                         href="/logout"
                         prepend-icon="mdi-logout"
                     >
                         <v-list-item-title>Logout</v-list-item-title>
                     </v-list-item>
 
-                    <!-- create project -->
-                    <!-- my project alos -->
                     <v-list-item
                         v-if="$page.props.auth.user"
-                        @click="menu = !menu"
                         href="/modeling/my"
                         prepend-icon="mdi-cube"
                     >
@@ -144,7 +131,6 @@ import FreeIcon from "@/assets/icons/freeicon.png";
 
                     <v-list-item
                         v-if="$page.props.auth.user"
-                        @click="menu = !menu"
                         href="/modeling/create"
                         prepend-icon="mdi-plus"
                     >
@@ -152,8 +138,8 @@ import FreeIcon from "@/assets/icons/freeicon.png";
                     </v-list-item>
                 </v-list>
             </v-menu>
-            <!-- v-menu -->
 
+            <!-- Sign In button for larger screens -->
             <v-btn
                 v-if="!$page.props.auth.user && $vuetify.display.mdAndUp"
                 class="text-none text-subtitle-1"
@@ -168,15 +154,24 @@ import FreeIcon from "@/assets/icons/freeicon.png";
 </template>
 
 <script>
-import { ref } from "vue";
-
 export default {
     setup() {
         const menu = ref(false);
-
         return {
             menu,
         };
     },
 };
 </script>
+
+<style>
+/* Ensure full width for mobile screens */
+.v-app-bar {
+    width: 100%;
+}
+
+/* Adjust avatar positioning */
+.v-avatar {
+    margin-left: auto;
+}
+</style>
