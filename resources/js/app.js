@@ -53,6 +53,10 @@ createInertiaApp({
         const pages = import.meta.glob("./views/**/*.vue", { eager: true });
         let page = pages[`./views/${name}.vue`];
 
+        if (!page || !page.default) {
+            throw new Error(`Could not find page: ${name}`);
+        }
+
         // Default to PublicLayout unless otherwise specified
         page.default.layout = PublicLayout;
 

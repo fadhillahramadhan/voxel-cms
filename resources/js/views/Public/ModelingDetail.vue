@@ -1,112 +1,75 @@
 <template>
     <v-container class="py-5">
         <v-row justify="center">
-            <v-col cols="12" md="8">
-                <v-card elevation="3" class="pa-4">
-                    <v-row>
-                        <!-- 3D Model Viewer -->
-                        <v-col cols="12" md="6" class="d-flex justify-center">
-                            <v-img
-                                :src="model.image"
-                                alt="Model Image"
-                                max-height="200"
-                                aspect-ratio="1"
-                                class="rounded elevation-1"
-                            ></v-img>
-                            <!-- Replace with Three.js or any 3D viewer integration -->
-                        </v-col>
-
-                        <!-- Model Information -->
-                        <v-col cols="12" md="6">
-                            <v-card-title class="text-h4 mb-3 pa-0 ma-0">{{
-                                model.name
-                            }}</v-card-title>
-                            <v-card-subtitle
-                                class="mb-3 pa-0 ma-0 text-uppercase"
-                                ><strong>Type:</strong> {{ model.type }}
-                            </v-card-subtitle>
-                            <p>
-                                {{
-                                    model.description ||
-                                    "No description available for this model."
-                                }}
-                            </p>
-
-                            <v-row class="mt-4">
-                                <v-col cols="6">
-                                    <strong>Created At:</strong> <br />
-                                    {{ formatDate(model.created_at) }}
-                                </v-col>
-                                <v-col cols="6">
-                                    <strong>Updated At:</strong> <br />
-                                    {{ formatDate(model.updated_at) }}
-                                </v-col>
-                            </v-row>
-
-                            <!-- Save and Publish Status -->
-                            <v-row class="mt-3">
-                                <v-col>
-                                    <v-chip
-                                        :color="
-                                            model.is_saved ? 'green' : 'red'
-                                        "
-                                        dark
-                                        class="mr-2"
-                                    >
-                                        {{
-                                            model.is_saved
-                                                ? "Saved"
-                                                : "Not Saved"
-                                        }}
-                                    </v-chip>
-                                    <v-chip
-                                        :color="
-                                            model.is_published ? 'blue' : 'grey'
-                                        "
-                                        dark
-                                    >
-                                        {{
-                                            model.is_published
-                                                ? "Published"
-                                                : "Not Published"
-                                        }}
-                                    </v-chip>
-                                </v-col>
-                            </v-row>
-                        </v-col>
-                    </v-row>
-                </v-card>
+            <v-col cols="12" md="8" class="d-flex justify-center mt-2">
+                <!-- iframe -->
+                <iframe
+                    width="100%"
+                    height="400"
+                    :src="engine_url + '&a=v'"
+                    frameborder="0"
+                    allow="autoplay; fullscreen; vr"
+                    allowfullscreen
+                    style="display: none"
+                ></iframe>
+                <!-- Replace with Three.js or any 3D viewer integration -->
             </v-col>
-
-            <!-- Call-to-Actions -->
-            <v-col cols="12" md="8" class="d-flex justify-center mt-4">
-                <v-btn
-                    color="primary"
-                    class="mr-3"
-                    v-if="
-                        $page.props.auth.user &&
-                        $page.props.auth.user.id == model.user_id
-                    "
-                    :href="engine_url + '&a=c'"
-                    target="_blank"
-                >
-                    Edit Model
-                </v-btn>
-
-                <!-- view model -->
-                <v-btn
-                    color="primary"
-                    class="mr-3"
-                    :href="engine_url"
-                    target="_blank"
-                    v-if="
-                        !$page.props.auth.user ||
-                        ($page.props.auth.user &&
-                            $page.props.auth.user.id != model.user_id)
+            <v-col
+                cols="12"
+                md="4"
+                class="d-flex justify-center mt-4 pa-0 ma-0"
+            >
+                <!-- Model detail & Action -->
+                <v-card
+                    class="elevation-2 pa-0 ma-0"
+                    style="
+                        width: 100% !important;
+                        height: fit-content !important;
                     "
                 >
-                    View Model
-                </v-btn>
+                    <v-card-title class="text-h5">
+                        {{ model.name }}
+                    </v-card-title>
+                    <v-chip class="mx-2">{{ model.type }}</v-chip>
+
+                    <v-card-text>
+                        <p>
+                            {{ model.description }}
+                        </p>
+                        <!-- author_name -->
+                        <p><strong>Author:</strong> {{ model.author_name }}</p>
+                        <!-- type badge or smt -->
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-btn
+                            color="primary"
+                            class="mr-3"
+                            v-if="
+                                $page.props.auth.user &&
+                                $page.props.auth.user.id == model.user_id
+                            "
+                            :href="engine_url"
+                            target="_blank"
+                        >
+                            Edit Model
+                        </v-btn>
+
+                        <!-- view model -->
+                        <v-btn
+                            color="primary"
+                            class="mr-3"
+                            :href="engine_url"
+                            target="_blank"
+                            v-if="
+                                !$page.props.auth.user ||
+                                ($page.props.auth.user &&
+                                    $page.props.auth.user.id != model.user_id)
+                            "
+                        >
+                            View Model
+                        </v-btn>
+                    </v-card-actions>
+                </v-card>
             </v-col>
         </v-row>
     </v-container>
@@ -138,6 +101,19 @@ export default {
         onDelete() {
             alert("Delete functionality to be implemented!");
         },
+    },
+    mounted() {
+        // Initialize 3D viewer
+        // Replace with Three.js or any 3D viewer integration
+        // 1 second delay to allow iframe to load
+        setTimeout(() => {
+            document.querySelector("iframe").style.display = "block";
+        }, 1000);
+    },
+    created() {
+        setTimeout(() => {
+            document.querySelector("iframe").style.display = "block";
+        }, 1000);
     },
 };
 </script>

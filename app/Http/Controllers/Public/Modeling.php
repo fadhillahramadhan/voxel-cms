@@ -34,7 +34,14 @@ class Modeling extends Controller
 
     public function detail($unique_code)
     {
-        $model = DB::table('custom_models')->where('unique_code', $unique_code)->first();
+        $model = DB::table('custom_models')
+            ->select('custom_models.*', 'users.name as author_name')
+            ->where('unique_code', $unique_code)->join('users', 'custom_models.user_id', '=', 'users.id')->first();
+
+        if (!$model) {
+            // 404
+            return redirect('/');
+        }
 
         return Inertia::render('Public/ModelingDetail', [
             'unique_code' => $unique_code,
