@@ -174,6 +174,13 @@ export default {
 </script>
 
 <style>
+@import url("https://fonts.googleapis.com/css2?family=Barlow&family=Dancing+Script&family=Inter&family=Mulish:ital,wght@1,200&family=Pixelify+Sans:wght@400..700&family=Poppins:wght@200&family=Roboto:ital,wght@0,400;1,100&family=Satisfy&display=swap");
+
+/* give pixelify to title */
+.v-toolbar-title {
+    font-family: "Pixelify Sans", sans-serif;
+}
+
 /* Ensure full width for mobile screens */
 .v-app-bar {
     width: 100%;
