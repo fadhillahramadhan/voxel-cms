@@ -48,7 +48,7 @@
                                 $page.props.auth.user &&
                                 $page.props.auth.user.id == model.user_id
                             "
-                            :href="engine_url"
+                            :href="engine_url + '&a=c'"
                             target="_blank"
                         >
                             Edit Model
