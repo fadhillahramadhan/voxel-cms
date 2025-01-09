@@ -1,7 +1,11 @@
 <template>
     <v-container class="py-5">
         <v-row justify="center">
-            <v-col cols="12" md="8" class="d-flex justify-center mt-2">
+            <v-col
+                cols="12"
+                md="12"
+                class="d-flex justify-center mt-2 pa-0 ma-0"
+            >
                 <!-- iframe -->
                 <iframe
                     width="100%"
@@ -16,7 +20,7 @@
             </v-col>
             <v-col
                 cols="12"
-                md="4"
+                md="12"
                 class="d-flex justify-center mt-4 pa-0 ma-0"
             >
                 <!-- Model detail & Action -->
