@@ -127,6 +127,11 @@ class Modeling extends Controller
                 ], 400);
             }
 
+            // check for session
+            if (!$request->session()->get('user')) {
+                throw new \Exception('Please login first.');
+            }
+
             $name = $request->input('name');
             $type = $request->input('type');
             $is_published = $request->input('is_published');
@@ -164,14 +169,18 @@ class Modeling extends Controller
                 'message' => 'Custom model saved successfully',
                 'error' => '',
                 'data' => [
-                    'engine_url' => env('APP_ENGINE_URL') . '?code=' . $unique_code . '&action=edit',
+                    'engine_url' => env('APP_ENGINE_URL') . '?code=' . $unique_code . '&a=c',
                 ]
             ], 200);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => $th->getMessage(),
                 'error' => 'error',
-                'data' => []
+                'data' => [
+                    // get line if dev
+                    'line' => $th->getLine(),
+
+                ]
             ], 400);
         }
     }
@@ -308,8 +317,6 @@ class Modeling extends Controller
                 'data' => $json
             ], 200);
         } catch (\Throwable $th) {
-            print_r($th->getMessage());
-            die;
             return response()->json([
                 'message' => $th->getMessage(),
                 'error' => 'error',

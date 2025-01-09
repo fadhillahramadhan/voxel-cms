@@ -32,23 +32,17 @@ import { ref } from "vue";
             </template>
 
             <v-list>
-                <!-- Home -->
-                <v-list-item href="/" prepend-icon="mdi-home">
-                    <v-list-item-title>Home</v-list-item-title>
-                </v-list-item>
-                <!-- about -->
-                <v-list-item href="/about" prepend-icon="mdi-information">
-                    <v-list-item-title>About</v-list-item-title>
-                </v-list-item>
-
-                <v-list-item
-                    v-if="$page.props.auth.user"
-                    href="/modeling/my"
-                    prepend-icon="mdi-cube"
-                >
-                    <v-list-item-title>My Projects</v-list-item-title>
+                <!-- user info user and email -->
+                <v-list-item prepend-icon="mdi-account">
+                    <v-list-item-title>
+                        {{ $page.props.auth.user.name }}
+                    </v-list-item-title>
+                    <v-list-item-subtitle class="mb-3">
+                        {{ $page.props.auth.user.email }}
+                    </v-list-item-subtitle>
                 </v-list-item>
 
+                <v-divider></v-divider>
                 <v-list-item
                     v-if="$page.props.auth.user"
                     href="/modeling/create"
@@ -59,18 +53,37 @@ import { ref } from "vue";
 
                 <v-list-item
                     v-if="$page.props.auth.user"
-                    href="/logout"
-                    prepend-icon="mdi-logout"
+                    href="/modeling/my"
+                    prepend-icon="mdi-cube"
                 >
-                    <v-list-item-title>Logout</v-list-item-title>
+                    <v-list-item-title>My Model</v-list-item-title>
                 </v-list-item>
 
+                <v-divider></v-divider>
+                <!-- Home -->
+                <v-list-item href="/" prepend-icon="mdi-home">
+                    <v-list-item-title>Home</v-list-item-title>
+                </v-list-item>
+                <!-- about -->
+                <v-list-item href="/about" prepend-icon="mdi-information">
+                    <v-list-item-title>About</v-list-item-title>
+                </v-list-item>
+
+                <v-divider></v-divider>
                 <v-list-item
                     v-if="!$page.props.auth.user"
                     href="/login"
                     prepend-icon="mdi-login"
                 >
                     <v-list-item-title>Login</v-list-item-title>
+                </v-list-item>
+
+                <v-list-item
+                    v-if="$page.props.auth.user"
+                    href="/logout"
+                    prepend-icon="mdi-logout"
+                >
+                    <v-list-item-title>Logout</v-list-item-title>
                 </v-list-item>
             </v-list>
         </v-menu>
@@ -122,14 +135,16 @@ import { ref } from "vue";
                 </template>
 
                 <v-list>
-                    <v-list-item
-                        v-if="$page.props.auth.user"
-                        href="/logout"
-                        prepend-icon="mdi-logout"
-                    >
-                        <v-list-item-title>Logout</v-list-item-title>
+                    <!-- user info name and email -->
+                    <v-list-item prepend-icon="mdi-account">
+                        <v-list-item-title>
+                            {{ $page.props.auth.user.name }}
+                        </v-list-item-title>
+                        <v-list-item-subtitle class="mb-3">
+                            {{ $page.props.auth.user.email }}
+                        </v-list-item-subtitle>
                     </v-list-item>
-
+                    <v-divider></v-divider>
                     <v-list-item
                         v-if="$page.props.auth.user"
                         href="/modeling/my"
@@ -145,6 +160,15 @@ import { ref } from "vue";
                     >
                         <v-list-item-title>Create Model</v-list-item-title>
                     </v-list-item>
+
+                    <v-divider></v-divider>
+                    <v-list-item
+                        v-if="$page.props.auth.user"
+                        href="/logout"
+                        prepend-icon="mdi-logout"
+                    >
+                        <v-list-item-title>Logout</v-list-item-title>
+                    </v-list-item>
                 </v-list>
             </v-menu>
 
@@ -155,6 +179,8 @@ import { ref } from "vue";
                 color="primary"
                 variant="flat"
                 href="/login"
+                rounded="xl"
+                prepend-icon="mdi-account"
             >
                 Sign In
             </v-btn>
@@ -179,6 +205,10 @@ export default {
 /* give pixelify to title */
 .v-toolbar-title {
     font-family: "Pixelify Sans", sans-serif;
+    /* COLOR AND SHADOW PINK GLITCHY */
+    color: #d513d5ff;
+    /* a bit shadow */
+    text-shadow: 2px 2px 2px #000000;
 }
 
 /* Ensure full width for mobile screens */

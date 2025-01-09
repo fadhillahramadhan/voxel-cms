@@ -1,25 +1,35 @@
 <script setup>
-import Icon from "@/assets/icons/icons.png";
 import axios from "axios";
+import FreeIcon from "@/assets/icons/freeicon.png";
 </script>
 <template>
     <v-container>
         <v-row>
-            <v-col cols="12" md="4" lg="3"> </v-col>
-            <v-col cols="12" md="4" lg="6">
+            <v-col cols="12" md="3" lg="3"> </v-col>
+            <v-col cols="12" md="6" lg="6">
                 <v-card rounded="lg">
                     <!--icon, Log in to your account, welcome back,form, rememberme, button  -->
                     <v-card-title class="text-center mb-2">
-                        <img
-                            :src="Icon"
-                            width="300"
-                            height="300"
-                            style="margin-top: -100px; margin-bottom: -100px"
-                        ></img>
+                        <div class="d-flex justify-center mb-5">
+                            <div class="d-flex align-center text-left">
+                                <img
+                                    :src="FreeIcon"
+                                    width="100"
+                                    height="70"
+                                    alt="Voxel Editor"
+                                />
+                                <v-toolbar-title
+                                    class="text-h5 font-weight-bold"
+                                    >Voxelize</v-toolbar-title
+                                >
+                            </div>
+                        </div>
                         <h2 class="text-h5 font-weight-bold">
                             Create a new model
                         </h2>
-                        <p class="text-subtitle-2">Welcome back, please enter your details</p>
+                        <p class="text-subtitle-2">
+                            Welcome back, please enter your details
+                        </p>
                     </v-card-title>
                     <!-- form -->
                     <v-card-text>
@@ -32,6 +42,7 @@ import axios from "axios";
                                 outlined
                                 dense
                                 required
+                                @enter="register"
                             ></v-text-field>
                             <!-- type -->
                             <v-text-field
@@ -41,19 +52,9 @@ import axios from "axios";
                                 outlined
                                 dense
                                 required
+                                @enter="register"
                             ></v-text-field>
 
-                            <!-- descriptions -->
-                            <v-textarea
-                                v-model="form.description"
-                                :error-messages="errors.description"
-                                label="Please enter the description of the model"
-                                outlined
-                                dense
-                                required
-                            ></v-textarea>
-
-                            <!-- is published or not option -->
                             <v-select
                                 v-model="form.is_published"
                                 :error-messages="errors.is_published"
@@ -67,6 +68,19 @@ import axios from "axios";
                             >
                             </v-select>
 
+                            <!-- descriptions -->
+                            <v-textarea
+                                v-model="form.description"
+                                :error-messages="errors.description"
+                                label="Please enter the description of the model"
+                                outlined
+                                dense
+                                required
+                                @enter="register"
+                            ></v-textarea>
+
+                            <!-- is published or not option -->
+
                             <!-- submit -->
                             <v-btn color="primary" dark block type="submit">
                                 Create Model
@@ -75,7 +89,7 @@ import axios from "axios";
                     </v-card-text>
                 </v-card>
             </v-col>
-            <v-col cols="12" md="4" lg="3"> </v-col>
+            <v-col cols="12" md="3" lg="3"> </v-col>
         </v-row>
     </v-container>
 </template>
@@ -116,22 +130,12 @@ export default {
                 ) {
                     this.errors = error.response.data.data;
                 } else {
-                    this.errorLogin = true;
-                    this.errors = {};
-                }
-
-                // Handle Error
-                if (
-                    error &&
-                    error.response &&
-                    error.response.data &&
-                    error.response.data.message
-                ) {
-                    this.errorLogin = error.response.data.message;
+                    this.errors = {
+                        name: [error.response.data.message],
+                    };
                 }
 
                 setTimeout(() => {
-                    this.errorLogin = false;
                     this.errors = {};
                 }, 5000);
             }

@@ -1,6 +1,6 @@
 <script setup>
-import Icon from "@/assets/icons/icons.png";
 import axios from "axios";
+import FreeIcon from "@/assets/icons/freeicon.png";
 </script>
 <template>
     <v-container>
@@ -10,16 +10,29 @@ import axios from "axios";
                 <v-card rounded="lg">
                     <!--icon, Log in to your account, welcome back,form, rememberme, button  -->
                     <v-card-title class="text-center mb-2">
-                        <img
-                            :src="Icon"
-                            width="300"
-                            height="300"
-                            style="margin-top: -100px; margin-bottom: -90px"
-                        ></img>
+                        <div class="d-flex justify-center mb-5">
+                            <div
+                                class="d-flex align-center text-left"
+                                style="width: 70%"
+                            >
+                                <img
+                                    :src="FreeIcon"
+                                    width="100"
+                                    height="70"
+                                    alt="Voxel Editor"
+                                />
+                                <v-toolbar-title
+                                    class="text-h6 font-weight-bold"
+                                    >Voxelize</v-toolbar-title
+                                >
+                            </div>
+                        </div>
                         <h2 class="text-h5 font-weight-bold">
                             Log in to your account
                         </h2>
-                        <p class="text-subtitle-2">Please enter your details</p>
+                        <p class="text-subtitle-2">
+                            Welcome back, please enter your details
+                        </p>
                     </v-card-title>
                     <!-- form -->
                     <!-- Form Register  Name, Email, Password, Confirm Password -->
@@ -32,6 +45,7 @@ import axios from "axios";
                                 outlined
                                 dense
                                 required
+                                @keyup.enter="register"
                             ></v-text-field>
                             <v-text-field
                                 v-model="form.email"
@@ -40,6 +54,7 @@ import axios from "axios";
                                 outlined
                                 dense
                                 required
+                                @keyup.enter="register"
                             ></v-text-field>
                             <v-text-field
                                 v-model="form.password"
@@ -49,6 +64,7 @@ import axios from "axios";
                                 dense
                                 required
                                 type="password"
+                                @keyup.enter="register"
                             ></v-text-field>
                             <v-text-field
                                 v-model="form.confirmPassword"
@@ -58,6 +74,7 @@ import axios from "axios";
                                 dense
                                 required
                                 type="password"
+                                @keyup.enter="register"
                             ></v-text-field>
                         </v-form>
                         <!-- button -->
@@ -75,9 +92,7 @@ import axios from "axios";
                             Already have an account?
                             <a href="/login">Log in</a>
                         </div>
-                           
                     </v-card-text>
-                     
                 </v-card>
             </v-col>
             <v-col cols="12" md="4" lg="4"> </v-col>
@@ -96,33 +111,34 @@ export default {
             password: "",
             confirmPassword: "",
         },
-        errors : {
+        errors: {
             name: "",
             email: "",
             password: "",
             confirmPassword: "",
-        }
-      
+        },
     }),
     methods: {
         async register() {
             try {
-                await axios
-                    .post("/register", this.form)
-                    .then((response) => {
-                        this.$inertia.visit("/login");
-                    })
+                await axios.post("/register", this.form).then((response) => {
+                    this.$inertia.visit("/login");
+                });
             } catch (error) {
-                if(error && error.response && error.response.data && error.response.data.error === "validation") {
+                if (
+                    error &&
+                    error.response &&
+                    error.response.data &&
+                    error.response.data.error === "validation"
+                ) {
                     this.errors = error.response.data.data;
                 } else {
-                    this.errorLogin = true;
-                    this.errors = {}
-                }
-
-                // Handle Error
-                if (error && error.response && error.response.data && error.response.data.message) {
-                    this.errorLogin = error.response.data.message;
+                    this.errors = {
+                        name: [error.response.data.message],
+                        email: "",
+                        password: "",
+                        confirmPassword: "",
+                    };
                 }
 
                 setTimeout(() => {
@@ -131,7 +147,6 @@ export default {
                 }, 5000);
             }
         },
-       
     },
 };
 </script>
