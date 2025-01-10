@@ -18,7 +18,7 @@ import axios from "axios";
         <!-- search bar order by and another things -->
         <v-col cols="12" md="12">
             <v-row>
-                <v-col cols="12" md="10">
+                <v-col cols="12" md="9">
                     <v-text-field
                         label="Search"
                         v-model="search"
@@ -32,7 +32,7 @@ import axios from "axios";
                         </v-btn>
                     </template>
                 </v-col>
-                <v-col cols="12" md="2">
+                <v-col cols="12" md="3">
                     <v-select
                         label="Order By"
                         outlined

@@ -33,7 +33,10 @@ import { ref } from "vue";
 
             <v-list>
                 <!-- user info user and email -->
-                <v-list-item prepend-icon="mdi-account">
+                <v-list-item
+                    prepend-icon="mdi-account"
+                    v-if="$page.props.auth.user"
+                >
                     <v-list-item-title>
                         {{ $page.props.auth.user.name }}
                     </v-list-item-title>
